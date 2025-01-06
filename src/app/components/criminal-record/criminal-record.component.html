@@ -1,0 +1,80 @@
+<div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-full w-full relative">
+  <h1 class="text-xl sm:text-3xl font-bold mb-4 text-gray-800 text-center">Ficha Criminal</h1>
+
+  <!-- Histórico de Crimes -->
+  <div class="mb-6">
+    <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Histórico de Crimes</h2>
+    <ul id="historico-crimes" class="list-disc list-inside bg-gray-100 p-3 rounded-md shadow-sm">
+      <li class="text-gray-600">Nenhum crime adicionado ainda.</li>
+    </ul>
+  </div>
+
+
+  <!-- Formulário Principal -->
+  <form [formGroup]="criminalForm" (ngSubmit)="enviarFormulario()">
+    <!-- Informações Pessoais -->
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+      <div>
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Foto</h2>
+        <app-webcam-snapshot></app-webcam-snapshot>
+      </div>
+      <div>
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Informações Pessoais</h2>
+        <div>
+          <label for="apelido" class="block text-sm font-medium text-gray-700">Apelido Criminal</label>
+          <input formControlName="apelido" id="apelido"
+            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+        </div>
+        <div>
+          <label for="apelido" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+          <input formControlName="nome" id="apelido"
+            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+        </div>
+        <div>
+          <label for="apelido" class="block text-sm font-medium text-gray-700">B.I</label>
+          <input formControlName="bi" id="apelido" type="text"
+            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+        </div>
+        <div>
+          <label for="apelido" class="block text-sm font-medium text-gray-700">Data de Nascimento</label>
+          <input formControlName="dataNascimento" id="apelido" type="date"
+            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+        </div>
+        <div>
+          <label for="genero" class="block text-sm font-medium text-gray-700">Gênero</label>
+          <select id="genero" name="genero" formControlName="genero"
+            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+            <option value="">Selecione</option>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adicionar Crime -->
+    <div class="mt-6">
+      <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Detalhes do Crime</h2>
+      <div class="space-y-4">
+        <div>
+          <label for="descricao-crime" class="block text-sm font-medium text-gray-700">Descrição do Crime</label>
+          <textarea id="descricao-crime" name="descricao-crime" rows="6" required
+          class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"></textarea>
+        </div>
+        <div>
+          <label for="data-crime" class="block text-sm font-medium text-gray-700">Data do Crime</label>
+          <input type="date" id="data-crime" name="data-crime" required
+          class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões -->
+    <div class="mt-6 flex gap-4 justify-end">
+      <button (click)="adicionarCrime()" type="button" class="px-4 py-2 bg-blue-500 text-white">Adicionar Crime</button>
+      <button type="submit" class="px-4 py-2 bg-green-500 text-white">Guadar</button>
+      <button type="reset" class="px-4 py-2 bg-gray-500 text-white">Limpar</button>
+    </div>
+  </form>
+</div>

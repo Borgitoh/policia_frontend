@@ -9,6 +9,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PageComponent } from './components/page/page.component';
+import { CriminalRecordComponent } from './components/criminal-record/criminal-record.component';
+import { WebcamSnapshotComponent } from './components/webcam-snapshot/webcam-snapshot.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { PageComponent } from './components/page/page.component';
     HomeComponent,
     NavbarComponent,
     SidebarComponent,
-    PageComponent
+    PageComponent,
+    CriminalRecordComponent,
+    WebcamSnapshotComponent
   ],
   imports: [
     BrowserModule,
