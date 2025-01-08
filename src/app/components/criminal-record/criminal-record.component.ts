@@ -14,7 +14,7 @@ export class CriminalRecordComponent {
    @ViewChild('webcam') webcam!: ElementRef<HTMLVideoElement>;
    @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
    fotoCapturada: string | null = null;
- 
+   maiorDeIdade: boolean = true;
    constructor(private fb: FormBuilder) {
     this.criminalForm = this.fb.group({
       apelido: ['', Validators.required],
@@ -22,11 +22,35 @@ export class CriminalRecordComponent {
       bi: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
       dataNascimento: ['', Validators.required],
       genero: ['', Validators.required],
+      descricaoCrime: ['', Validators.required],
+      dataCrime: ['', Validators.required],
       historicoCrimes: this.fb.array([]),
       foto: [''],
     });
     this.inicializarWebcam();
+
+    this.criminalForm.get('dataNascimento')?.valueChanges.subscribe((value) => {
+      if (value) {
+         this.maiorDeIdade = this.verificarMaioridade(value);
+      }
+    })
    }
+
+   verificarMaioridade(dataNascimento: string): boolean {
+    const nascimento = new Date(dataNascimento);
+    const hoje = new Date();
+
+    const anos = hoje.getFullYear() - nascimento.getFullYear();
+    const meses = hoje.getMonth() - nascimento.getMonth();
+    const dias = hoje.getDate() - nascimento.getDate();
+
+    // Ajusta anos, meses e dias caso o aniversário ainda não tenha ocorrido no ano atual
+    if (meses < 0 || (meses === 0 && dias < 0)) {
+      return anos - 1 >= 18; // Se ainda não completou aniversário, ajusta para um ano a menos
+    }
+
+    return anos >= 18;
+  }
  
    // Getter para acessar o array de crimes
    get historicoCrimes(): FormArray {
@@ -35,12 +59,25 @@ export class CriminalRecordComponent {
  
    // Adicionar crime ao histórico
    adicionarCrime(): void {
-     const crimeForm = this.fb.group({
-       descricao: ['', Validators.required],
-       data: ['', Validators.required],
-     });
-     this.historicoCrimes.push(crimeForm);
-   }
+    const { descricaoCrime, dataCrime } = this.criminalForm.value;
+
+    // Cria um novo crime no formato esperado
+    const crimeForm = this.fb.group({
+      descricaoCrime: [descricaoCrime, Validators.required],
+      dataCrime: [dataCrime, Validators.required],
+    });
+
+    // Adiciona ao FormArray
+    this.historicoCrimes.push(crimeForm);
+
+    console.log(this.historicoCrimes.value);
+
+    // Opcional: Resete os campos específicos do crime após adicionar
+    this.criminalForm.patchValue({
+      descricaoCrime: '',
+      dataCrime: '',
+    });
+  }
  
    // Remover crime do histórico
    removerCrime(index: number): void {

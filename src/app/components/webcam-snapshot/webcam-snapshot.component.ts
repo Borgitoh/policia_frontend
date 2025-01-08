@@ -53,6 +53,9 @@ export class WebcamSnapshotComponent {
     this.isCaptured = false;
   }
 
+  removePhoto(index: number): void {
+    this.captures.splice(index, 1);
+  }
   setPhoto(idx: number) {
     this.isCaptured = true;
     var image = new Image();

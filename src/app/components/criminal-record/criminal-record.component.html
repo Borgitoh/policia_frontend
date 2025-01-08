@@ -5,7 +5,10 @@
   <div class="mb-6">
     <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Histórico de Crimes</h2>
     <ul id="historico-crimes" class="list-disc list-inside bg-gray-100 p-3 rounded-md shadow-sm">
-      <li class="text-gray-600">Nenhum crime adicionado ainda.</li>
+      <li class="text-gray-600" *ngIf="!historicoCrimes.length"> Nenhum crime adicionado ainda.</li>
+      <li *ngFor="let crime of historicoCrimes.controls; let idx = index" class="text-gray-600">
+        {{ crime.value.dataCrime }} - {{ crime.value.descricaoCrime }} 
+      </li>
     </ul>
   </div>
 
@@ -39,16 +42,32 @@
           <label for="apelido" class="block text-sm font-medium text-gray-700">Data de Nascimento</label>
           <input formControlName="dataNascimento" id="apelido" type="date"
             class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+            <span class="text-red-600" *ngIf="!maiorDeIdade"> reencaminhar para Julgado de Menores</span>
         </div>
-        <div>
-          <label for="genero" class="block text-sm font-medium text-gray-700">Gênero</label>
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+          <div>
+            <label for="genero" class="block text-sm font-medium text-gray-700">Gênero</label>
           <select id="genero" name="genero" formControlName="genero"
             class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
             <option value="">Selecione</option>
             <option value="M">Masculino</option>
             <option value="F">Feminino</option>
-
           </select>
+          </div>
+          <div>
+            <label for="genero" class="block text-sm font-medium text-gray-700">Nivel Academico</label>
+          <select id="genero" name="genero" formControlName="genero"
+            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+            <option value="">Selecione</option>
+            <option value="M">- 12 ano</option>
+            <option value="M">Frequência Ensino Médio</option>
+            <option value="M">Ensino Medio</option>
+            <option value="M">Bacharelato</option>
+            <option value="M">Frequência de Licenciatura</option>
+            <option value="F">Licenciatura</option>
+          </select>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -59,12 +78,12 @@
       <div class="space-y-4">
         <div>
           <label for="descricao-crime" class="block text-sm font-medium text-gray-700">Descrição do Crime</label>
-          <textarea id="descricao-crime" name="descricao-crime" rows="6" required
-          class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"></textarea>
+          <textarea id="descricao-crime" name="descricao-crime" rows="6" required formControlName="descricaoCrime"
+          class="flex w-full rounded-md focus:border-blue-500 border  bg-transparent  shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"></textarea>
         </div>
         <div>
           <label for="data-crime" class="block text-sm font-medium text-gray-700">Data do Crime</label>
-          <input type="date" id="data-crime" name="data-crime" required
+          <input type="date" id="data-crime" name="data-crime" required formControlName="dataCrime"
           class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
         </div>
       </div>
