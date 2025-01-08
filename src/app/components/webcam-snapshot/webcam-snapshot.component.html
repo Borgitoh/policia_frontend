@@ -1,0 +1,31 @@
+<div class="flex justify-center video-container" *ngIf="!error">
+	<video [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" [width]="WIDTH" [height]="HEIGHT"
+		autoplay></video>
+	<canvas [class.show]="isCaptured" [class.hide]="!isCaptured" #canvas id="canvas" [width]="WIDTH"
+		[height]="HEIGHT"></canvas>
+</div>
+
+<div class="snap-container" *ngIf="!(captures.length>4)">
+	<button class="w-32 btn btn-primary bg-blue-500 text-white py-2 rounded-md text-lg shadow-md hover:bg-blue-600" *ngIf="!isCaptured" (click)="capture()">Snap Photo</button>
+	<button class="w-32 btn btn-danger bg-blue-500 text-white py-2 rounded-md text-lg shadow-md hover:bg-blue-600" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button>
+
+	<div *ngIf="error" class="text-danger mt-4">
+		{{ error }}. Please click refresh on stackblitz
+		<div class="mt-5">
+			<img src="https://trungk18.com/7e0976255739e721501803ee074f1f94/camera.gif" />
+		</div>
+		</div>
+	</div>
+
+	<ul class="list-none p-0 flex flex-wrap">
+    <li *ngFor="let src of captures; let idx = index" class="cursor-pointer relative m-2" (click)="setPhoto(idx)">
+      <!-- Imagem -->
+      <img [src]="src" class="w-20 h-20 rounded-md shadow-md object-cover" />
+      <button
+        class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-red-700"
+        (click)="removePhoto(idx)"
+      >
+        ✕
+      </button>
+    </li>
+  </ul>
