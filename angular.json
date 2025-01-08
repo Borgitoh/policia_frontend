@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/policia",
+            "outputPath": "dist/policia_frotend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -100,8 +100,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "b082b3e0-69f5-4691-a6c0-51eef16cca30"
   }
 }
