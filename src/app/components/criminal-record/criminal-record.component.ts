@@ -60,19 +60,13 @@ export class CriminalRecordComponent {
    // Adicionar crime ao histórico
    adicionarCrime(): void {
     const { descricaoCrime, dataCrime } = this.criminalForm.value;
-
-    // Cria um novo crime no formato esperado
     const crimeForm = this.fb.group({
       descricaoCrime: [descricaoCrime, Validators.required],
       dataCrime: [dataCrime, Validators.required],
     });
 
-    // Adiciona ao FormArray
     this.historicoCrimes.push(crimeForm);
 
-    console.log(this.historicoCrimes.value);
-
-    // Opcional: Resete os campos específicos do crime após adicionar
     this.criminalForm.patchValue({
       descricaoCrime: '',
       dataCrime: '',
@@ -95,8 +89,6 @@ export class CriminalRecordComponent {
          console.error('Erro ao acessar a webcam:', err);
        });
    }
- 
-   // Capturar foto da webcam
    capturarFoto(): void {
      const canvas = this.canvas.nativeElement;
      const context = canvas.getContext('2d');
@@ -119,4 +111,21 @@ export class CriminalRecordComponent {
        console.error('Formulário inválido!');
      }
    }
+
+   imprimirFicha() {
+    const fichaElement = document.getElementById('ficha-criminal'); 
+    if (fichaElement) {
+      const printWindow = window.open('', '_blank');
+      printWindow?.document.write('<html><head><title>Ficha Criminal</title>');
+      printWindow?.document.write(' <script src="https://cdn.tailwindcss.com"></script>'); 
+      printWindow?.document.write('</head><body>');
+      printWindow?.document.write(fichaElement.innerHTML); 
+      printWindow?.document.write('</body></html>');
+      printWindow?.document.close();
+      setTimeout(()=>{                           
+        printWindow?.print(); 
+    }, 1000);
+     
+    }
+  }
 }

@@ -1,0 +1,25 @@
+{
+  "user": [
+    {
+      "id": "fbcd",
+      "name": "KENE CONDE",
+      "login": "teste@gmail.com",
+      "password": "123123aA",
+      "confirmPassword": "123123aA",
+      "code": "COMISSARIO_GERAL",
+      "bi": "005861278LA045",
+      "phone": "947578136"
+    },
+    {
+      "id": "7022",
+      "name": "KENE CONDE",
+      "login": "teste@gmail.com",
+      "password": "123123aA",
+      "confirmPassword": "123123aA",
+      "code": "COMISSARIO_GERAL",
+      "bi": "005861278LA045",
+      "phone": "947578136"
+    }
+  ],
+  "Criminals":[]
+}

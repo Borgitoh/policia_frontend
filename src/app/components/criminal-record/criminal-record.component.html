@@ -1,4 +1,4 @@
-<div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-full w-full relative">
+<div id="ficha-criminal"  class="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-full w-full relative">
   <h1 class="text-xl sm:text-3xl font-bold mb-4 text-gray-800 text-center">Ficha Criminal</h1>
 
   <!-- Histórico de Crimes -->
@@ -93,7 +93,9 @@
     <div class="mt-6 flex gap-4 justify-end">
       <button (click)="adicionarCrime()" type="button" class="px-4 py-2 bg-blue-500 text-white">Adicionar Crime</button>
       <button type="submit" class="px-4 py-2 bg-green-500 text-white">Guadar</button>
+      <button (click)="imprimirFicha()" class="px-4 py-2 bg-blue-500 text-white">Imprimir Ficha</button>
       <button type="reset" class="px-4 py-2 bg-gray-500 text-white">Limpar</button>
     </div>
+    
   </form>
 </div>

@@ -1,15 +1,23 @@
 <div class="bg-gray-100 min-h-screen">
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Configurações do Sistema</h1>
+    <div class="flex items-center space-x-4 mb-6">
+      <button *ngIf="!isModalOpen"
+      class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700" 
+      (click)="openComponent(true,'Configurações do Sistema','default')">
+      ←
+    </button>
+      <h1 class="text-3xl font-bold text-gray-800">{{labelSettings}}</h1>
+    </div>
+        
 
     <!-- Grid Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="isModalOpen">
 
         <!-- Gerenciamento de Permissões -->
         <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Gerenciamento de Permissões</h2>
-            <p class="text-gray-600 mb-4">Defina níveis de acesso para usuários.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Gerenciar Permissões</button>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Gerenciamento de usuários</h2>
+            <p class="text-gray-600 mb-4">Faça Cadastro e Defina níveis de acesso para usuários.</p>
+            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700" (click)="openComponent(true, 'Cadastro de Usuários','user')">Gerenciar Permissões</button>
         </div>
 
         <!-- Personalização do Sistema -->
@@ -37,45 +45,7 @@
         <div class="bg-white shadow rounded-lg p-6">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Logs do Sistema</h2>
             <p class="text-gray-600 mb-4">Visualize atividades recentes no sistema.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700" onclick="document.getElementById('logs-table').classList.toggle('hidden')">Ver Logs</button>
-
-            <!-- Tabela de Logs (oculta inicialmente) -->
-            <div id="logs-table" class="hidden mt-4 overflow-x-auto">
-                <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 border-b text-left">Data</th>
-                            <th class="px-4 py-2 border-b text-left">Usuário</th>
-                            <th class="px-4 py-2 border-b text-left">Ação</th>
-                            <th class="px-4 py-2 border-b text-left">Descrição</th>
-                            <th class="px-4 py-2 border-b text-left">IP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="px-4 py-2 border-b">2025-01-02</td>
-                            <td class="px-4 py-2 border-b">Admin</td>
-                            <td class="px-4 py-2 border-b">Login</td>
-                            <td class="px-4 py-2 border-b">Usuário autenticado</td>
-                            <td class="px-4 py-2 border-b">192.168.1.1</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">2025-01-02</td>
-                            <td class="px-4 py-2 border-b">Operador</td>
-                            <td class="px-4 py-2 border-b">Consulta</td>
-                            <td class="px-4 py-2 border-b">Consultou ficha criminal</td>
-                            <td class="px-4 py-2 border-b">192.168.1.2</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">2025-01-02</td>
-                            <td class="px-4 py-2 border-b">Admin</td>
-                            <td class="px-4 py-2 border-b">Logout</td>
-                            <td class="px-4 py-2 border-b">Usuário desconectado</td>
-                            <td class="px-4 py-2 border-b">192.168.1.1</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700" (click)="openComponent(true,'Logs do Sistema','logs')">Ver Logs</button>
         </div>
 
         <!-- Integração de Dispositivos -->
@@ -85,6 +55,10 @@
             <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Configurar Dispositivos</button>
         </div>
 
+    </div>
+    <div>
+      <app-users-list *ngIf="isUserComponent"></app-users-list>
+      <app-logs *ngIf="islogsComponent"></app-logs>
     </div>
 </div>
 

@@ -1,0 +1,94 @@
+<section class="container left-0 right-0 m-auto h-[80vh] flex flex-col justify-between">
+  <div class="bg-white dark:bg-[#081023] rounded-t-lg rounded-b-lg flex-1 flex flex-col justify-center">
+    <div class="flex flex-col gap-8 items-center">
+      <div class="flex justify-center items-center">
+        <div class="relative flex items-center justify-center mt-2 w-48 h-48 rounded-full overflow-hidden bg-[#eee]">
+          <span *ngIf="userForm.get('name')?.value" class="text-gray-500 text-2xl">
+            {{ getInitials(userForm.get('name')?.value) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="w-full  px-6">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="p-4 space-y-4">
+          <div>
+            <label for="email" class="block dark:text-white mb-1">Nome</label>
+            <input id="name" formControlName="name"
+              class="w-full p-2 rounded border focus:ring-1 ring-offset-1 ring-blue-800 dark:bg-dark-primary dark:border-none"
+              required />
+          </div>
+
+          <div>
+            <Label className="dark:text-white mb-1">Tipo de Usuário</Label>
+            <select id="code" formControlName="code" required
+              class="mt-1 block w-full h-9 border border-input bg-transparent rounded-md shadow-sm px-3 py-1 text-sm">
+              <option *ngFor="let tipo of tiposUsuarios" [value]="tipo.value">{{ tipo.label }}</option>
+            </select>
+          </div>
+          <div>
+            <label for="email" class="block dark:text-white mb-1">Email</label>
+            <input id="email" type="email" formControlName="login"
+              class="w-full p-2 rounded border focus:ring-1 ring-offset-1 ring-blue-800 dark:bg-dark-primary dark:border-none"
+              required />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4" >
+            <div class="col-span-2">
+              <label for="bi" class="block dark:text-white mb-1">bi</label>
+              <input type="text" id="bi" class="border p-2 rounded w-full"
+                [ngClass]="{'border-red-500': userForm.get('bi')?.invalid && userForm.get('bi')?.touched}"
+                formControlName="bi" max="14"/>
+            </div>
+            <div class="col-span-2">
+              <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+              <input formControlName="phone" id="phone" type="text" required
+                     mask=" 000-000-000" prefix="+244"
+                     class="mt-1 block w-full h-9 border border-input bg-transparent rounded-md shadow-sm px-3 py-1 text-sm" />
+            </div>
+          </div>
+
+          <div>
+            <label for="password" class="block dark:text-white mb-1">Senha</label>
+            <div class="relative">
+              <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                [ngClass]="{ 'border-red-500': !passwordsMatch && userForm.get('confirmPassword')?.touched }"
+                class="w-full p-2 rounded border focus:ring-1 ring-offset-1 ring-blue-800 dark:bg-dark-primary dark:border-none"
+                required />
+              <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3"
+                (click)="togglePassword()">
+                <span *ngIf="showPassword"><lucide-icon name="eye"></lucide-icon></span>
+                <span *ngIf="!showPassword"><lucide-icon name="eye-off"></lucide-icon></span>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="confirmPassword" class="block dark:text-white mb-1">Confirmar Senha</label>
+            <div class="relative">
+              <input id="confirmPassword" [type]="showPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                [ngClass]="{ 'border-red-500': !passwordsMatch && userForm.get('confirmPassword')?.touched }"
+                class="w-full p-2 rounded border focus:ring-1 ring-offset-1 ring-blue-800 dark:bg-dark-primary dark:border-none"
+                required />
+              <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3"
+                (click)="togglePassword()">
+                <span *ngIf="showPassword"><lucide-icon name="eye"></lucide-icon></span>
+                <span *ngIf="!showPassword"><lucide-icon name="eye-off"></lucide-icon></span>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="!passwordsMatch && userForm.get('confirmPassword')?.touched" class="text-red-500 text-sm">
+            As senhas não coincidem.
+          </div>
+
+
+          <div class="mt-4">
+            <button type="submit" class="bg-blue-500 w-full text-white p-2 rounded">
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
