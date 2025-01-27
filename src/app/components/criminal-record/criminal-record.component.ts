@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -9,12 +9,25 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CriminalRecordComponent {
    // Formulário reativo principal
    criminalForm!: FormGroup;
+   @Output() goList = new EventEmitter<any>();
 
    // Webcam
    @ViewChild('webcam') webcam!: ElementRef<HTMLVideoElement>;
    @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
    fotoCapturada: string | null = null;
    maiorDeIdade: boolean = true;
+
+   tiposCrime: { value: string; label: string }[] = [
+    { value: 'CRIME_CONTRA_PESSOA', label: 'Crimes Contra a Pessoa' },
+    { value: 'CRIME_CONTRA_PATRIMONIO', label: 'Crimes Contra o Patrimônio' },
+    { value: 'CRIME_CONTRA_ADMINISTRACAO_PUBLICA', label: 'Crimes Contra a Administração Pública' },
+    { value: 'CRIME_CONTRA_ORDEM_ECONOMICA', label: 'Crimes Contra a Ordem Econômica e Tributária' },
+    { value: 'CRIME_CONTRA_HONRA', label: 'Crimes Contra a Honra' },
+    { value: 'CRIME_CIBERNETICO', label: 'Crimes Cibernéticos' },
+    { value: 'CRIME_CONTRA_SAUDE_PUBLICA', label: 'Crimes Contra a Saúde Pública' },
+    { value: 'CRIME_AMBIENTAL', label: 'Crimes Ambientais' },
+    { value: 'CRIME_CONTRA_SEGURANCA_NACIONAL', label: 'Crimes Contra a Segurança Nacional' }];
+
    constructor(private fb: FormBuilder) {
     this.criminalForm = this.fb.group({
       apelido: ['', Validators.required],
@@ -36,6 +49,10 @@ export class CriminalRecordComponent {
     })
    }
 
+   listComponent() {
+   this.goList.emit();
+  }
+
    verificarMaioridade(dataNascimento: string): boolean {
     const nascimento = new Date(dataNascimento);
     const hoje = new Date();
@@ -51,12 +68,12 @@ export class CriminalRecordComponent {
 
     return anos >= 18;
   }
- 
+
    // Getter para acessar o array de crimes
    get historicoCrimes(): FormArray {
      return this.criminalForm.get('historicoCrimes') as FormArray;
    }
- 
+
    // Adicionar crime ao histórico
    adicionarCrime(): void {
     const { descricaoCrime, dataCrime } = this.criminalForm.value;
@@ -72,12 +89,12 @@ export class CriminalRecordComponent {
       dataCrime: '',
     });
   }
- 
+
    // Remover crime do histórico
    removerCrime(index: number): void {
      this.historicoCrimes.removeAt(index);
    }
- 
+
    // Inicializar webcam
    inicializarWebcam(): void {
      navigator.mediaDevices
@@ -93,7 +110,7 @@ export class CriminalRecordComponent {
      const canvas = this.canvas.nativeElement;
      const context = canvas.getContext('2d');
      const video = this.webcam.nativeElement;
- 
+
      if (context) {
        canvas.width = video.videoWidth;
        canvas.height = video.videoHeight;
@@ -102,7 +119,7 @@ export class CriminalRecordComponent {
        this.criminalForm.patchValue({ foto: this.fotoCapturada });
      }
    }
- 
+
    // Submeter formulário
    enviarFormulario(): void {
      if (this.criminalForm.valid) {
@@ -113,19 +130,19 @@ export class CriminalRecordComponent {
    }
 
    imprimirFicha() {
-    const fichaElement = document.getElementById('ficha-criminal'); 
+    const fichaElement = document.getElementById('ficha-criminal');
     if (fichaElement) {
       const printWindow = window.open('', '_blank');
       printWindow?.document.write('<html><head><title>Ficha Criminal</title>');
-      printWindow?.document.write(' <script src="https://cdn.tailwindcss.com"></script>'); 
+      printWindow?.document.write(' <script src="https://cdn.tailwindcss.com"></script>');
       printWindow?.document.write('</head><body>');
-      printWindow?.document.write(fichaElement.innerHTML); 
+      printWindow?.document.write(fichaElement.innerHTML);
       printWindow?.document.write('</body></html>');
       printWindow?.document.close();
-      setTimeout(()=>{                           
-        printWindow?.print(); 
+      setTimeout(()=>{
+        printWindow?.print();
     }, 1000);
-     
+
     }
   }
 }

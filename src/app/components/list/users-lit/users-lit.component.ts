@@ -36,7 +36,7 @@ export class UsersLitComponent {
     { value: 'AGENTE_TERCEIRA_CLASSE', label: 'Agente de 3.ª Classe' },
     { value: 'ALISTADO', label: 'Alistado' }
   ];
-  
+
 
   constructor(private usuarioService: UsuarioService,
               private router: Router) {
@@ -139,11 +139,6 @@ export class UsersLitComponent {
     const initials = firstnome[0].toUpperCase() + (lastnome ? lastnome[0].toUpperCase() : '');
 
     return initials;
-  }
-
-  goConta(user:any){
-    this.router.navigate(['sysconp/conta/'+user.uuid]);
-
   }
 
   getFilteredPermissions(permissao: any) {

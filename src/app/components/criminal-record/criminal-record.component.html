@@ -1,4 +1,9 @@
 <div id="ficha-criminal"  class="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-full w-full relative">
+  <button
+  class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700"
+  (click)="listComponent()">
+  ←
+</button>
   <h1 class="text-xl sm:text-3xl font-bold mb-4 text-gray-800 text-center">Ficha Criminal</h1>
 
   <!-- Histórico de Crimes -->
@@ -7,7 +12,7 @@
     <ul id="historico-crimes" class="list-disc list-inside bg-gray-100 p-3 rounded-md shadow-sm">
       <li class="text-gray-600" *ngIf="!historicoCrimes.length"> Nenhum crime adicionado ainda.</li>
       <li *ngFor="let crime of historicoCrimes.controls; let idx = index" class="text-gray-600">
-        {{ crime.value.dataCrime }} - {{ crime.value.descricaoCrime }} 
+        {{ crime.value.dataCrime }} - {{ crime.value.descricaoCrime }}
       </li>
     </ul>
   </div>
@@ -67,7 +72,15 @@
             <option value="F">Licenciatura</option>
           </select>
           </div>
-          
+        </div>
+        <div class="mt-6">
+          <label for="genero" class="block text-sm font-medium text-gray-700">Tipo de Crime</label>
+          <select  placeholder="Tipo de Usuário"
+          class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+          <option value="" disabled  hidden>Selecione</option>
+          <option *ngFor="let tipo of tiposCrime" [value]="tipo.value">{{ tipo.label }}</option>
+          <option  [value]="'outros'">Outros</option>
+          </select>
         </div>
       </div>
     </div>
@@ -96,6 +109,6 @@
       <button (click)="imprimirFicha()" class="px-4 py-2 bg-blue-500 text-white">Imprimir Ficha</button>
       <button type="reset" class="px-4 py-2 bg-gray-500 text-white">Limpar</button>
     </div>
-    
+
   </form>
 </div>

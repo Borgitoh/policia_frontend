@@ -19,6 +19,10 @@ import { UserModalComponent } from './components/modal/user-modal/user-modal.com
 import { NgxMaskDirective, provideNgxMask, } from 'ngx-mask';
 import { DatePipe } from '@angular/common';
 import { LogsComponent } from './components/logs/logs.component';
+import { CriminalListComponent } from './components/list/criminal-list/criminal-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DenunciaListComponent } from './components/list/denuncia-list/denuncia-list.component';
+import { DenunciaComponent } from './components/denuncia/denuncia.component';
 
 const icon: any =
   {
@@ -66,10 +70,14 @@ const icon: any =
     SettingsComponent,
     UsersLitComponent,
     UserModalComponent,
-    LogsComponent
+    LogsComponent,
+    CriminalListComponent,
+    DenunciaListComponent,
+    DenunciaComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     LucideAngularModule.pick(icon),
     NgxMaskDirective,

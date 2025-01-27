@@ -1,0 +1,69 @@
+<div class="container mx-auto p-6 bg-gray-100 min-h-screen">
+    <nav class="bg-blue-600 text-white py-4 shadow mb-6">
+      <div class="flex items-center space-x-4 px-4">
+        <img src="https://pna.gov.ao/public/img/logo_pna.svg" alt="Polícia Nacional de Angola" class="w-12 h-12">
+        <span class="text-2xl font-bold">Registro de Queixa ou Participação</span>
+      </div>
+    </nav>
+  
+    <form [formGroup]="registroForm" class="bg-white shadow rounded-lg p-6 space-y-4" (ngSubmit)="onSubmit()">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">Formulário de Registro</h1>
+      <p class="text-gray-600 mb-2">Por favor, preencha os campos abaixo para registrar sua queixa ou participação.</p>
+  
+      <!-- Dados do Queixante -->
+      <div>
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Dados do Queixante</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="nome" class="block text-gray-700 font-medium">Nome Completo</label>
+            <input type="text" id="nome" formControlName="nome" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Seu nome completo">
+          </div>
+          <div>
+            <label for="identificacao" class="block text-gray-700 font-medium">Número do BI/Passaporte</label>
+            <input type="text" id="identificacao" formControlName="identificacao" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Número de identificação">
+          </div>
+          <div>
+            <label for="telefone" class="block text-gray-700 font-medium">Telefone</label>
+            <input type="tel" id="telefone" formControlName="telefone" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Número de telefone">
+          </div>
+          <div>
+            <label for="email" class="block text-gray-700 font-medium">E-mail</label>
+            <input type="email" id="email" formControlName="email" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Seu e-mail">
+          </div>
+        </div>
+      </div>
+  
+      <!-- Detalhes do Incidente -->
+      <div>
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Detalhes do Incidente</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="tipo" class="block text-gray-700 font-medium">Tipo de Registro</label>
+            <select id="tipo" formControlName="tipo" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">
+              <option value="Queixa">Queixa</option>
+              <option value="Participação">Participação</option>
+            </select>
+          </div>
+          <div>
+            <label for="data" class="block text-gray-700 font-medium">Data do Incidente</label>
+            <input type="date" id="data" formControlName="data" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          </div>
+          <div>
+            <label for="local" class="block text-gray-700 font-medium">Local do Incidente</label>
+            <input type="text" id="local" formControlName="local" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Local onde ocorreu">
+          </div>
+        </div>
+        <div>
+          <label for="descricao" class="block text-gray-700 font-medium">Descrição</label>
+          <textarea id="descricao" rows="4" formControlName="descricao" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Descreva o ocorrido"></textarea>
+        </div>
+      </div>
+  
+      <!-- Botões -->
+      <div class="flex justify-end space-x-4">
+        <button type="reset" class="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400">Limpar</button>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Salvar</button>
+      </div>
+    </form>
+  </div>
+  
