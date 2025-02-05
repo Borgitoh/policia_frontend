@@ -6,16 +6,21 @@
       <p class="text-gray-600">Acesse o sistema da Ficha Criminal</p>
     </div>
 
+    <!-- Exibe erro de login -->
+    <div *ngIf="errorMessage" class="bg-red-100 text-red-700 px-4 py-2 rounded-md text-sm mb-4">
+      {{ errorMessage }}
+    </div>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <div>
-        <label for="username" class="block text-lg font-medium text-gray-700">Usuário</label>
+        <label for="login" class="block text-lg font-medium text-gray-700">Usuário</label>
         <input
-          id="username"
+          id="login"
           type="text"
-          formControlName="username"
+          formControlName="login"
           required
-          class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"/>
-        <small *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="text-red-500">
+          class="flex h-9 w-full rounded-md border border-gray-300 px-3 py-1 text-sm shadow-sm transition focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"/>
+        <small *ngIf="loginForm.get('login')?.invalid && loginForm.get('login')?.touched" class="text-red-500">
           Usuário é obrigatório
         </small>
       </div>
@@ -27,7 +32,7 @@
           type="password"
           formControlName="password"
           required
-          class="flex h-9 w-full rounded-md  focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 "/>
+          class="flex h-9 w-full rounded-md border border-gray-300 px-3 py-1 text-sm shadow-sm transition focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"/>
         <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500">
           Senha é obrigatória
         </small>
@@ -41,7 +46,7 @@
         <a href="#" class="text-sm text-blue-500 hover:underline">Esqueceu a senha?</a>
       </div>
 
-      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md text-lg shadow-md hover:bg-blue-600" [disabled]="loginForm.invalid">
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md text-lg shadow-md hover:bg-blue-600 transition" [disabled]="loginForm.invalid">
         Entrar
       </button>
     </form>
@@ -49,4 +54,3 @@
     <p class="text-center text-sm text-gray-600 mt-6">© 2025 Polícia Nacional de Angola. Todos os direitos reservados.</p>
   </div>
 </div>
-

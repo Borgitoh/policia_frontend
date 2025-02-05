@@ -16,6 +16,9 @@ export class CriminalRecordComponent {
    @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
    fotoCapturada: string | null = null;
    maiorDeIdade: boolean = true;
+   dropdownOpen = false;
+   selectedCrimes: { value: string; label: string }[] = [];
+   dados:any  = ''
 
    tiposCrime: { value: string; label: string }[] = [
     { value: 'CRIME_CONTRA_PESSOA', label: 'Crimes Contra a Pessoa' },
@@ -37,6 +40,7 @@ export class CriminalRecordComponent {
       genero: ['', Validators.required],
       descricaoCrime: ['', Validators.required],
       dataCrime: ['', Validators.required],
+      tipoCrime:[[],Validators.required],
       historicoCrimes: this.fb.array([]),
       foto: [''],
     });
@@ -53,6 +57,23 @@ export class CriminalRecordComponent {
    this.goList.emit();
   }
 
+   toggleTipoCrime(value:any) {
+    if (this.selectedCrimes.includes(value)) {
+      this.selectedCrimes = this.selectedCrimes.filter(crime => crime !== value);
+    } else {
+      this.selectedCrimes.push(value);
+     this.dados += value.label+ ', '
+      
+    }
+  }
+
+  isSelected(value: string): boolean {
+    return this.selectedCrimes.some(crime => crime.value === value);
+  }
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+  
    verificarMaioridade(dataNascimento: string): boolean {
     const nascimento = new Date(dataNascimento);
     const hoje = new Date();
@@ -76,16 +97,17 @@ export class CriminalRecordComponent {
 
    // Adicionar crime ao histórico
    adicionarCrime(): void {
-    const { descricaoCrime, dataCrime } = this.criminalForm.value;
+    this.criminalForm.get('tipoCrime')?.setValue( this.selectedCrimes)
+    const { tipoCrime, dataCrime } = this.criminalForm.value;
     const crimeForm = this.fb.group({
-      descricaoCrime: [descricaoCrime, Validators.required],
+      tipoCrime: [tipoCrime, Validators.required],
       dataCrime: [dataCrime, Validators.required],
     });
 
     this.historicoCrimes.push(crimeForm);
 
     this.criminalForm.patchValue({
-      descricaoCrime: '',
+      tipoCrime: '',
       dataCrime: '',
     });
   }

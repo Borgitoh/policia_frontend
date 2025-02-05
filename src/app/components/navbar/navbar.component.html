@@ -18,7 +18,10 @@
     <a routerLink="/home" class="block py-2 px-4 hover:bg-blue-800 sm:hover:bg-blue-600">PNA</a>
     <a routerLink="/home/criminal-records" class="block py-2 px-4 hover:bg-blue-800 sm:hover:bg-blue-600">Fichas
       Criminais</a>
+    <a routerLink="/home/denuncia"   class="block py-2 px-4 hover:bg-blue-800 sm:hover:bg-blue-600">Registro</a>
     <a routerLink="/home/reports" class="block py-2 px-4 hover:bg-blue-800 sm:hover:bg-blue-600">Relatórios</a>
     <a routerLink="/home/settings" class="block py-2 px-4 hover:bg-blue-800 sm:hover:bg-blue-600">Configurações</a>
+    <a (click)="logout()" routerLink="/home/settings"  class="hover:bg-blue-800 p-2 rounded-md block">Sair</a>
+    
   </div>
 </nav>

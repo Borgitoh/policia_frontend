@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { jsPDF } from "jspdf";
 
@@ -10,13 +10,16 @@ import { jsPDF } from "jspdf";
 export class DenunciaComponent {
 
   registroForm: FormGroup;
+  @Output() goList = new EventEmitter<any>();
+  @Output() addRegistos = new EventEmitter<any>();
+  @Input() selectedRegistos: any;
 
   constructor(private fb: FormBuilder) {
     this.registroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       identificacao: ['', [Validators.required]],
-      telefone: ['', [Validators.required, Validators.pattern(/^(\+244|00244)?[9|2][0-9]{8}$/)]],
-      email: ['', [Validators.email]],
+      telefone: ['', [Validators.required]],
+      email: ['', ],
       tipo: ['Queixa', [Validators.required]],
       data: ['', [Validators.required]],
       local: ['', [Validators.required]],
@@ -26,9 +29,14 @@ export class DenunciaComponent {
 
 
   onSubmit(){
-    
+    this.addRegistos.emit(this.registroForm.value);
+    this.gerarPDF();
+   
   }
 
+  listComponent() {
+    this.goList.emit();
+   }
   gerarPDF() {
     if (this.registroForm.invalid) {
       alert('Por favor, preencha todos os campos obrigatórios.');

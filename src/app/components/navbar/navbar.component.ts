@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/service/usuario-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,4 +14,10 @@ export class NavbarComponent {
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
+
+  constructor( private usuarioService: UsuarioService, private router: Router) {}
+    logout() {
+      this.usuarioService.logout(); 
+      this.router.navigate(['/login']); 
+    }
 }

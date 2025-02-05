@@ -80,6 +80,8 @@ export class UserModalComponent {
   
   onSubmit(): void {
     this.submitted = false;
+    console.log(22);
+    
     if (this.userForm.valid && this.passwordsMatch) {
       this.addUsuario.emit(this.userForm.value)
       this.userForm.reset();
