@@ -11,17 +11,153 @@
       "phone": "947578136"
     },
     {
-      "id": "7022",
-      "name": "KENE CONDE",
-      "login": "teste@gmail.com",
+      "id": "ca9f",
+      "name": "Domingo Conde",
+      "login": "domingos.conde@gmail.com",
       "password": "123123aA",
       "confirmPassword": "123123aA",
       "code": "COMISSARIO_GERAL",
+      "bi": "123456758235444444",
+      "phone": "444444444"
+    },
+    {
+      "id": "ee1c",
+      "name": "Skay",
+      "login": "amid@ami.com",
+      "password": "1234",
+      "confirmPassword": "1234",
+      "code": "AGENTE_PRIMEIRA_CLASSE",
+      "bi": "005891278LA045",
+      "phone": "947578136"
+    },
+    {
+      "id": "e108",
+      "name": "Moreno Placido",
+      "login": "castelo@castelo.com",
+      "password": "castelo2022",
+      "confirmPassword": "castelo2022",
+      "code": "INSPECTOR_CHEFE",
+      "bi": "005861278LA045",
+      "phone": "947578136"
+    },
+    {
+      "id": "67ca",
+      "name": "Moreno Placido",
+      "login": "castelo@castelo.com",
+      "password": "castelo2022",
+      "confirmPassword": "castelo2022",
+      "code": "INSPECTOR_CHEFE",
+      "bi": "005861278LA045",
+      "phone": "947578136"
+    },
+    {
+      "id": "d425",
+      "name": "Inocencio Carlos ",
+      "login": "dev.padmv2.administrador@gmail.com",
+      "password": "1qCurs6Dd38bOxCIY@",
+      "confirmPassword": "1qCurs6Dd38bOxCIY@",
+      "code": "TERCEIRO_SUBCHEFE",
+      "bi": "005861278LA045",
+      "phone": "444444444"
+    },
+    {
+      "id": "3ee2",
+      "name": "Mario Soares",
+      "login": "teste@gmail.com",
+      "password": "123123aA",
+      "confirmPassword": "123123aA",
+      "code": "AGENTE_SEGUNDA_CLASSE",
+      "bi": "005861278LA045",
+      "phone": "947578136"
+    },
+    {
+      "id": "9f7d",
+      "name": "Mario Soares",
+      "login": "teste@gmail.com",
+      "password": "123123aA",
+      "confirmPassword": "123123aA",
+      "code": "AGENTE_SEGUNDA_CLASSE",
+      "bi": "005861278LA045",
+      "phone": "947578136"
+    },
+    {
+      "id": "ae70",
+      "name": "Keila Tomas",
+      "login": "teste@gmail.com",
+      "password": "123123aA",
+      "confirmPassword": "123123aA",
+      "code": "AGENTE_PRIMEIRA_CLASSE",
+      "bi": "009117643BO041",
+      "phone": "333333333"
+    },
+    {
+      "id": "15f2",
+      "name": "Mauro da silva",
+      "login": "teste4@gmail.com",
+      "password": "123123aA",
+      "confirmPassword": "123123aA",
+      "code": "SEGUNDO_SUBCHEFE",
       "bi": "005861278LA045",
       "phone": "947578136"
     }
   ],
-  "Criminals":[],
-  "registros": [],
+  "Criminals": [],
+  "registros": [
+    {
+      "id": "ce63",
+      "nome": "Kene Condeasdasdasd",
+      "identificacao": "005861278LA045",
+      "telefone": "947578136",
+      "email": "marildamanuel9@gmail.com",
+      "tipo": "Participação",
+      "data": "2025-01-08",
+      "local": "sadfasdfaf",
+      "descricao": "fadfaafddafad"
+    },
+    {
+      "id": "ea52",
+      "nome": "Derio da silva",
+      "identificacao": "005861278LA045",
+      "telefone": "444444",
+      "email": "admin@gmail.com",
+      "tipo": "Queixa",
+      "data": "2025-01-10",
+      "local": "sadfasdfaf",
+      "descricao": "sdffsdfs"
+    },
+    {
+      "id": "ee06",
+      "nome": "Joana da Silva ",
+      "identificacao": "005861278LA045",
+      "telefone": "33333",
+      "email": "kevenconde1998@gmail.com",
+      "tipo": "Queixa",
+      "data": "2025-01-22",
+      "local": "sadfasdfaf",
+      "descricao": "asdasdasdasdasdasdas"
+    },
+    {
+      "id": "42ab",
+      "nome": "Amelia JOSE",
+      "identificacao": "00245645343la045",
+      "telefone": "484545464",
+      "email": "kene009@mailinator.com",
+      "tipo": "Queixa",
+      "data": "2025-01-30",
+      "local": "sadfasdfaf",
+      "descricao": "asdasdasdasdas"
+    },
+    {
+      "id": "cd67",
+      "nome": "Maria da silva",
+      "identificacao": "005861278LA045",
+      "telefone": "947578136",
+      "email": "teste@gmail.com",
+      "tipo": "Queixa",
+      "data": "2025-01-22",
+      "local": "aasdasdas",
+      "descricao": "aslkdjaksjdlariqjohuhoiohipjpoejqrbqwropjqweqepjwqe"
+    }
+  ],
   "logs": []
 }

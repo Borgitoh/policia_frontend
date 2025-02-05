@@ -7,12 +7,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
   styleUrls: ['./criminal-list.component.scss'],
   animations: [
     trigger('fadeInOut', [
-      transition(':enter', [ // Quando o elemento entra no DOM
-        style({ opacity: 0 }), // Começa invisível
-        animate('300ms ease-in', style({ opacity: 1 })), // Anima até 100% de opacidade
+      transition(':enter', [
+        style({ opacity: 0 }), 
+        animate('300ms ease-in', style({ opacity: 1 })), 
       ]),
-      transition(':leave', [ // Quando o elemento sai do DOM
-        animate('300ms ease-out', style({ opacity: 0 })), // Anima até 0% de opacidade
+      transition(':leave', [ 
+        animate('300ms ease-out', style({ opacity: 0 })), 
       ]),
     ]),
   ],

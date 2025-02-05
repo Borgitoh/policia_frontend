@@ -1,6 +1,6 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Briefcase, CalendarDays, Check, CheckCheck, CircleSlash, Clock3, Clock4, Coins, DollarSign, Download, Edit, Ellipsis, Eye, EyeOff, File, FileIcon, FileText, HandCoins, Home, Lock, LucideAngularModule, Menu, Pencil, Plus, Settings, ShoppingCart, Trash2, User, UserCheck, UserRoundCog, Users } from 'lucide-angular';
+import { Briefcase, CalendarDays, Check, CheckCheck, CircleSlash, Clock3, Clock4, Coins, DollarSign, Download, Edit, Ellipsis, Eye, EyeOff, File, FileIcon, FileText, HandCoins, Home, Lock, LucideAngularModule, Menu, Pencil, Plus, Settings, ShieldBan, ShoppingCart, Trash2, User, UserCheck, UserRoundCog, Users } from 'lucide-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -53,7 +53,8 @@ const icon: any =
     Eye,
     Check,
     Coins,
-    File
+    File,
+    ShieldBan
   }
 
 @NgModule({

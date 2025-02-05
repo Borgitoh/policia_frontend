@@ -86,24 +86,12 @@ export class UsersLitComponent {
     this.isModalOpen = true;
   }
 
-  addCliente(usuario:any){
-    this.usuarioService.addUsuario(usuario).subscribe(
-      (_ : any) => {
-        console.error("user add");
-      },
-      (error: any) => {
-        console.error('Erro ao usaurio:', error);
-      }
-    );
-  }
-
   addUsuario(usuario: any) {
-    this.closeModal();
+    
     if(!this.selectedUsuario){
       this.usuarioService.addUsuario(usuario).subscribe(
         (dados:any) => {
            usuario.uuid =dados.uuid;
-           this.addCliente(usuario);
           this.getUsuario();
         },
         (error) => {
@@ -120,9 +108,7 @@ export class UsersLitComponent {
         }
       );
     }
-
-    this.selectedUsuario = null
-
+    this.closeModal();
   }
 
   getInitials(nome: any) {
