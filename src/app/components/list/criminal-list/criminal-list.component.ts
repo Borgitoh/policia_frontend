@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { CriminalsService } from 'src/app/service/criminals.service';
 
 @Component({
   selector: 'app-criminal-list',
@@ -38,9 +39,8 @@ export class CriminalListComponent {
     { value: 'CRIME_CONTRA_SEGURANCA_NACIONAL', label: 'Crimes Contra a Segurança Nacional' }
   ];
 
-
-    constructor() {
-
+    constructor(private criminalsService : CriminalsService) {
+      this.getCriminals();
     }
 
   filterUsers() {
@@ -61,9 +61,19 @@ export class CriminalListComponent {
     this.selectedUsuario= null
   }
 
+  getCriminals(){
+    this.criminalsService.getRegistros().subscribe(
+      (data: any) => {
+        this.filteredUsers = data
+      },
+      (error) => {
+        console.error('Erro ao usaurio:', error);
+      }
+    );
+  }
+
   editUsuario(usuario:any) {
     this.selectedUsuario = usuario
-    this.selectedUsuario.code = usuario.code
     this.isModalOpen = true;
   }
 
@@ -73,21 +83,6 @@ export class CriminalListComponent {
 
   openCrime() {
     this.isModalOpen = !this.isModalOpen;
-  }
-  addCrime(usuario:any){
-
-  }
-
-  addUsuario(usuario: any) {
-    this.goList();
-    if(!this.selectedUsuario){
-
-    }else{
-
-    }
-
-    this.selectedUsuario = null
-
   }
 
   getInitials(nome: any) {
@@ -104,10 +99,6 @@ export class CriminalListComponent {
     const initials = firstnome[0].toUpperCase() + (lastnome ? lastnome[0].toUpperCase() : '');
 
     return initials;
-  }
-
-  getFilteredPermissions(permissao: any) {
-        return null
   }
 
 }

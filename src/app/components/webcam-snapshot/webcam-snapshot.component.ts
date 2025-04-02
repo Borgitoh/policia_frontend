@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-webcam-snapshot',
@@ -6,6 +6,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./webcam-snapshot.component.scss']
 })
 export class WebcamSnapshotComponent {
+
+  @Input() selectedUsuario: any ;
 
   WIDTH = 340;
   HEIGHT = 380;
@@ -20,9 +22,19 @@ export class WebcamSnapshotComponent {
   error: any;
   isCaptured: boolean = false;
 
+   constructor() {}
+
   async ngAfterViewInit() {
     await this.setupDevices();
   }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.selectedUsuario) {
+          this.captures = this.selectedUsuario.foto;
+          setTimeout(() => {
+            this.setPhoto(0);
+          }, 100);
+        }
+    }
 
   async setupDevices() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {

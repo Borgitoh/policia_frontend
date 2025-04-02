@@ -1,5 +1,7 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { WebcamSnapshotComponent } from '../webcam-snapshot/webcam-snapshot.component';
+import { CriminalsService } from 'src/app/service/criminals.service';
 
 @Component({
   selector: 'app-criminal-record',
@@ -10,10 +12,11 @@ export class CriminalRecordComponent {
    // Formulário reativo principal
    criminalForm!: FormGroup;
    @Output() goList = new EventEmitter<any>();
-
-   // Webcam
+   @Input() selectedUsuario: any ;
    @ViewChild('webcam') webcam!: ElementRef<HTMLVideoElement>;
    @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
+   @ViewChild(WebcamSnapshotComponent) webcamSnapshotComponent!: WebcamSnapshotComponent;
+
    fotoCapturada: string | null = null;
    maiorDeIdade: boolean = true;
    dropdownOpen = false;
@@ -31,7 +34,8 @@ export class CriminalRecordComponent {
     { value: 'CRIME_AMBIENTAL', label: 'Crimes Ambientais' },
     { value: 'CRIME_CONTRA_SEGURANCA_NACIONAL', label: 'Crimes Contra a Segurança Nacional' }];
 
-   constructor(private fb: FormBuilder) {
+   constructor(private fb: FormBuilder,
+               private criminalsService : CriminalsService) {
     this.criminalForm = this.fb.group({
       apelido: ['', Validators.required],
       nome: ['', Validators.required],
@@ -39,7 +43,7 @@ export class CriminalRecordComponent {
       dataNascimento: ['', Validators.required],
       genero: ['', Validators.required],
       descricaoCrime: ['', Validators.required],
-      dataCrime: ['', Validators.required],
+      dataCrime: [''],
       tipoCrime:[[],Validators.required],
       historicoCrimes: this.fb.array([]),
       foto: [''],
@@ -57,24 +61,28 @@ export class CriminalRecordComponent {
    this.goList.emit();
   }
 
+   ngOnChanges(changes: SimpleChanges): void {
+      if (this.selectedUsuario) {
+        this.criminalForm.patchValue(this.selectedUsuario);
+        this.adicionarCrime(this.selectedUsuario.historicoCrimes[0]);
+      }
+    }
+
    toggleTipoCrime(value:any) {
     if (this.selectedCrimes.includes(value)) {
       this.selectedCrimes = this.selectedCrimes.filter(crime => crime !== value);
     } else {
       this.selectedCrimes.push(value);
      this.dados += value.label+ ', '
-      
     }
   }
-
   isSelected(value: string): boolean {
     return this.selectedCrimes.some(crime => crime.value === value);
   }
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }
-  
-   verificarMaioridade(dataNascimento: string): boolean {
+  verificarMaioridade(dataNascimento: string): boolean {
     const nascimento = new Date(dataNascimento);
     const hoje = new Date();
 
@@ -82,37 +90,33 @@ export class CriminalRecordComponent {
     const meses = hoje.getMonth() - nascimento.getMonth();
     const dias = hoje.getDate() - nascimento.getDate();
 
-    // Ajusta anos, meses e dias caso o aniversário ainda não tenha ocorrido no ano atual
     if (meses < 0 || (meses === 0 && dias < 0)) {
-      return anos - 1 >= 18; // Se ainda não completou aniversário, ajusta para um ano a menos
+      return anos - 1 >= 18; 
     }
-
     return anos >= 18;
   }
 
-   // Getter para acessar o array de crimes
-   get historicoCrimes(): FormArray {
+  get historicoCrimes(): FormArray {
      return this.criminalForm.get('historicoCrimes') as FormArray;
    }
-
-   // Adicionar crime ao histórico
-   adicionarCrime(): void {
-    this.criminalForm.get('tipoCrime')?.setValue( this.selectedCrimes)
-    const { tipoCrime, dataCrime } = this.criminalForm.value;
-    const crimeForm = this.fb.group({
-      tipoCrime: [tipoCrime, Validators.required],
-      dataCrime: [dataCrime, Validators.required],
-    });
-
-    this.historicoCrimes.push(crimeForm);
-
-    this.criminalForm.patchValue({
-      tipoCrime: '',
-      dataCrime: '',
-    });
+   adicionarCrime(items?:any): void {
+    if(items){
+      const crimeForm = this.fb.group({
+        tipoCrime: [items.tipoCrime, Validators.required],
+        dataCrime: [items.dataCrime, Validators.required],
+      });
+      this.historicoCrimes.push(crimeForm);
+    }else{
+      this.criminalForm.get('tipoCrime')?.setValue( this.selectedCrimes)
+      const { tipoCrime, dataCrime } = this.criminalForm.value;
+      const crimeForm = this.fb.group({
+        tipoCrime: [tipoCrime, Validators.required],
+        dataCrime: [dataCrime, Validators.required],
+      });
+      this.historicoCrimes.push(crimeForm);
+    }
   }
 
-   // Remover crime do histórico
    removerCrime(index: number): void {
      this.historicoCrimes.removeAt(index);
    }
@@ -128,6 +132,7 @@ export class CriminalRecordComponent {
          console.error('Erro ao acessar a webcam:', err);
        });
    }
+
    capturarFoto(): void {
      const canvas = this.canvas.nativeElement;
      const context = canvas.getContext('2d');
@@ -144,15 +149,25 @@ export class CriminalRecordComponent {
 
    // Submeter formulário
    enviarFormulario(): void {
-     if (this.criminalForm.valid) {
-       console.log('Dados enviados:', this.criminalForm.value);
+     if (this.criminalForm.valid && this.webcamSnapshotComponent.captures) {
+        this.criminalForm.get('foto')?.setValue(this.webcamSnapshotComponent.captures);
+        this.criminalsService.addRegistro(this.criminalForm.value).subscribe(
+          (_:any) => {
+            
+          },
+          (error) => {
+            console.error('Erro ao usaurio:', error);
+          }
+        );
+       
      } else {
        console.error('Formulário inválido!');
      }
    }
-
    imprimirFicha() {
     const fichaElement = document.getElementById('ficha-criminal');
+    console.log(fichaElement);
+    
     if (fichaElement) {
       const printWindow = window.open('', '_blank');
       printWindow?.document.write('<html><head><title>Ficha Criminal</title>');

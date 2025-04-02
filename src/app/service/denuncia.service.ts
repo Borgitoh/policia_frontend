@@ -11,9 +11,10 @@ export class DenunciaService {
   constructor(private http: HttpClient) {}
 
 
-  getRegistros(): Observable<any[]> {
+   getRegistros(): Observable<any[]> {
       return this.http.get<any[]>(this.apiUrl);
     }
+
     addRegistro(resgitro: any): Observable<any> {
       return this.http.post<any>(`${this.apiUrl}`, resgitro);
     }

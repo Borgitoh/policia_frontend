@@ -17,11 +17,11 @@
 		</div>
 	</div>
 
-	<ul class="list-none p-0 flex flex-wrap">
+	<ul class="list-none p-0 flex flex-wrap justify-center">
     <li *ngFor="let src of captures; let idx = index" class="cursor-pointer relative m-2" (click)="setPhoto(idx)">
       <!-- Imagem -->
       <img [src]="src" class="w-20 h-20 rounded-md shadow-md object-cover" />
-      <button
+      <button *ngIf="!selectedUsuario"
         class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-red-700"
         (click)="removePhoto(idx)"
       >

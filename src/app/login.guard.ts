@@ -8,11 +8,9 @@ export const loginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if (authService.isAuthenticated()) {
-    console.log(222);
-    
-    return true; // Permite acesso à rota
+    return true; 
   } else {
-    router.navigate(['/login']); // Redireciona para login
+    router.navigate(['/login']);
     return false;
   }
 };
