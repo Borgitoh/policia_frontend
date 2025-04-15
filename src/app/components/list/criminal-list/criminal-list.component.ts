@@ -50,7 +50,6 @@ export class CriminalListComponent {
   }
 
   filterByPerfil() {
-    console.log(this.searchTerm)
     this.filteredUsers = this.filteredUsers.filter(user =>
       user.permission[0].code.toLowerCase().includes(this.searchTerm.toLowerCase())
     );

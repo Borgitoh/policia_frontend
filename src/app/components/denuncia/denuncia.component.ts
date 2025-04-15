@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { jsPDF } from "jspdf";
+import { CriminalsService } from 'src/app/service/criminals.service';
 
 @Component({
   selector: 'app-denuncia',
@@ -13,8 +14,11 @@ export class DenunciaComponent {
   @Output() goList = new EventEmitter<any>();
   @Output() addRegistos = new EventEmitter<any>();
   @Input() selectedRegistos: any;
-
-  constructor(private fb: FormBuilder) {
+  isModalOpen = false;
+  criminosos: any[] = [];
+  
+  constructor(private fb: FormBuilder,
+              private criminalsService : CriminalsService) {
     this.registroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       identificacao: ['', [Validators.required]],
@@ -23,8 +27,10 @@ export class DenunciaComponent {
       tipo: ['Queixa', [Validators.required]],
       data: ['', [Validators.required]],
       local: ['', [Validators.required]],
-      descricao: ['', [Validators.required, Validators.minLength(10)]]
+      descricao: ['', [Validators.required, Validators.minLength(10)]],
+      criminiso: ['']
     });
+    this.getCriminals();
   }
 
 
@@ -37,6 +43,32 @@ export class DenunciaComponent {
   listComponent() {
     this.goList.emit();
    }
+
+   openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  // Fecha o modal
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  getCriminals(){
+    this.criminalsService.getRegistros().subscribe(
+      (data: any) => {
+        this.criminosos = data
+      },
+      (error) => {
+        console.error('Erro ao usaurio:', error);
+      }
+    );
+  }
+
+  selectCriminoso(criminoso: any): void {
+    this.registroForm.get('criminiso')?.setValue(criminoso.nome); // Define o criminoso no campo
+    this.closeModal(); // Fecha o modal
+  }
+  
   gerarPDF() {
     if (this.registroForm.invalid) {
       alert('Por favor, preencha todos os campos obrigatórios.');

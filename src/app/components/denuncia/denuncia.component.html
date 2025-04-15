@@ -1,12 +1,12 @@
 <div class="container mx-auto p-6 bg-gray-100 min-h-screen">
-    <nav class="bg-blue-600 text-white py-4 shadow mb-6">
+    <nav class="bg-gray-100 text-white py-4 mb-6">
       <div class="flex items-center space-x-4 px-4">
         <button
-        class="bg-white text-blue-600 w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700"
+        class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700"
         (click)="listComponent()">
         ←
       </button>
-        <span class="text-2xl font-bold">Registro de Queixa ou Participação</span>
+        <span class="text-2xl font-bold text-black">Registro de Queixa ou Participação</span>
       </div>
     </nav>
   
@@ -57,6 +57,19 @@
             <label for="local" class="block text-gray-700 font-medium">Local do Incidente</label>
             <input type="text" id="local" formControlName="local"class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" placeholder="Local onde ocorreu">
           </div>
+          <div>
+            <label for="criminiso" class="block text-gray-700 font-medium">Criminoso</label>
+            <input 
+              type="text" 
+              id="criminiso" 
+              formControlName="criminiso"
+              (click)="openModal()" 
+              class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="Clique para selecionar um criminoso"
+              readonly
+            >
+          </div>
+          
         </div>
         <div>
           <label for="descricao" class="block text-gray-700 font-medium">Descrição</label>
@@ -72,3 +85,26 @@
     </form>
   </div>
   
+  <!-- Modal -->
+<div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+    <h2 class="text-xl font-semibold mb-4">Selecione um Criminoso</h2>
+    <ul class="space-y-2">
+      <li *ngFor="let criminoso of criminosos" (click)="selectCriminoso(criminoso)"
+        class="cursor-pointer hover:bg-gray-100 p-2 rounded flex items-center space-x-4 transition-colors">
+        <img [src]="criminoso.foto[0]" alt="Foto do {{ criminoso.apelido }}"
+          class="w-16 h-16 object-cover border rounded-full" />
+        <span class="text-base font-medium text-gray-800">
+          Apelido: {{ criminoso.apelido }}
+        </span>
+        <span class="text-base font-medium text-gray-800">
+          Nome do Completo : {{ criminoso.nome }}
+        </span>
+      </li>
+
+    </ul>
+    <div class="flex justify-end mt-4">
+      <button (click)="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md">Fechar</button>
+    </div>
+  </div>
+</div>
