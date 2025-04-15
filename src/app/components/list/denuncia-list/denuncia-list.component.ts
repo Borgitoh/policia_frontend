@@ -52,10 +52,8 @@ export class DenunciaListComponent {
   }
 
   filterByCategory() {
-    console.log(this.selectedCategory);
     if (this.selectedCategory) {
       this.filteredRegistos = this.registos.filter(reg => reg.tipo == this.selectedCategory);
-      console.log(this.filteredRegistos);
     } else {
       this.filteredRegistos = [...this.registos]; 
     }

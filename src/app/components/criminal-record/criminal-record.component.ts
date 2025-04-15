@@ -166,17 +166,18 @@ export class CriminalRecordComponent {
    }
    imprimirFicha() {
     const fichaElement = document.getElementById('ficha-criminal');
-    console.log(this.selectedUsuario);
-    
+
     if (fichaElement) {
       const printWindow = window.open('', '_blank');
       printWindow?.document.write('<html><head><title>Ficha Criminal</title>');
       printWindow?.document.write(' <script src="https://cdn.tailwindcss.com"></script>');
       printWindow?.document.write('</head><body>');
+
       let fichaHTML = fichaElement.innerHTML;
       fichaHTML = fichaHTML.replace(/<video[^>]*>.*?<\/video>/s, ``);
       fichaHTML = fichaHTML.replace(/<canvas[^>]*>.*?<\/canvas>/s, `<img src="${this.selectedUsuario.foto[0]}" class="w-80 h-auto border rounded" />`);
-      console.log(fichaHTML);
+     
+      
       printWindow?.document.write(fichaHTML);
       printWindow?.document.write('</body></html>');
       printWindow?.document.close();

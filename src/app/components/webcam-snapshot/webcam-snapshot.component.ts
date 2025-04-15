@@ -81,7 +81,6 @@ export class WebcamSnapshotComponent {
   }
 
   drawImageToCanvas(image: any) {
-    console.log(image);
     this.canvas?.nativeElement
       .getContext("2d")
       .drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
