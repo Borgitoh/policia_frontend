@@ -7,7 +7,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, View
 })
 export class WebcamSnapshotComponent {
 
-  @Input() selectedUsuario: any ;
+  @Input() selectedUsuario: any;
 
   WIDTH = 340;
   HEIGHT = 380;
@@ -16,25 +16,25 @@ export class WebcamSnapshotComponent {
   public video?: ElementRef;
 
   @ViewChild("canvas")
-  public canvas?: ElementRef  ;
+  public canvas?: ElementRef;
 
   captures: string[] = [];
   error: any;
   isCaptured: boolean = false;
 
-   constructor() {}
+  constructor() { }
 
   async ngAfterViewInit() {
     await this.setupDevices();
   }
-    ngOnChanges(changes: SimpleChanges): void {
-        if (this.selectedUsuario) {
-          this.captures = this.selectedUsuario.foto;
-          setTimeout(() => {
-            this.setPhoto(0);
-          }, 100);
-        }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.selectedUsuario) {
+      this.captures = this.selectedUsuario.foto;
+      setTimeout(() => {
+        this.setPhoto(0);
+      }, 100);
     }
+  }
 
   async setupDevices() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -72,10 +72,16 @@ export class WebcamSnapshotComponent {
     this.isCaptured = true;
     var image = new Image();
     image.src = this.captures[idx];
+
+    const container = document.getElementById('imagemCrime');
+    if (container) {
+      container.appendChild(image);
+    }
     this.drawImageToCanvas(image);
   }
 
   drawImageToCanvas(image: any) {
+    console.log(image);
     this.canvas?.nativeElement
       .getContext("2d")
       .drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
