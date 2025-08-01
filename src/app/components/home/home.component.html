@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
-<div class="h-full flex flex-1">
-  <app-sidebar  class="hidden sm:block"></app-sidebar>
-  <div class="flex-1">
+<div class="min-h-screen flex">
+  <app-sidebar class="hidden lg:block w-64 flex-shrink-0"></app-sidebar>
+  <div class="flex-1 min-w-0">
     <router-outlet></router-outlet>
   </div>
 </div>
