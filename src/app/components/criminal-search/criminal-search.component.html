@@ -1,0 +1,263 @@
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h1 class="text-3xl font-bold text-pna-blue flex items-center">
+        <svg class="w-8 h-8 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+        </svg>
+        Consultar Criminoso
+      </h1>
+      <p class="text-gray-600 mt-2">Pesquise por nome, alcunha ou bilhete de identidade</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1">
+          <input type="text" 
+                 [(ngModel)]="searchQuery" 
+                 (keydown)="onEnterKey($event)"
+                 placeholder="Digite o nome, alcunha ou BI do criminoso..."
+                 class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+        </div>
+        <div class="flex gap-2">
+          <button (click)="searchCriminals()" 
+                  [disabled]="!searchQuery.trim() || isSearching"
+                  class="bg-pna-blue text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span *ngIf="!isSearching">🔍 Pesquisar</span>
+            <span *ngIf="isSearching">Pesquisando...</span>
+          </button>
+          <button (click)="clearSearch()" 
+                  class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">
+            Limpar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Results -->
+    <div *ngIf="hasSearched">
+      <!-- Results Found -->
+      <div *ngIf="searchResults.length > 0">
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            Resultados da Pesquisa ({{ searchResults.length }} encontrado{{ searchResults.length > 1 ? 's' : '' }})
+          </h2>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div *ngFor="let criminal of searchResults" 
+                 class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              
+              <!-- Criminal Header -->
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex-1">
+                  <h3 class="text-lg font-bold text-gray-800">{{ criminal.nome }}</h3>
+                  <p *ngIf="criminal.apelido" class="text-gray-600">Alcunha: "{{ criminal.apelido }}"</p>
+                  <p class="text-sm text-gray-500 mt-1">BI: {{ criminal.bi }}</p>
+                </div>
+                <div class="flex flex-col items-end space-y-2">
+                  <span [ngClass]="getPericulosityClass(criminal.nivelPericulosidade)" 
+                        class="px-3 py-1 rounded-full text-xs font-medium">
+                    {{ criminal.nivelPericulosidade }}
+                  </span>
+                  <span [ngClass]="getStatusClass(criminal.status)" 
+                        class="px-3 py-1 rounded-full text-xs font-medium">
+                    {{ criminal.status }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Criminal Info -->
+              <div class="space-y-2 mb-4">
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span class="font-medium text-gray-700">Idade:</span>
+                    <span class="text-gray-600 ml-1">{{ criminal.idade }} anos</span>
+                  </div>
+                  <div>
+                    <span class="font-medium text-gray-700">Gênero:</span>
+                    <span class="text-gray-600 ml-1">{{ criminal.genero === 'M' ? 'Masculino' : 'Feminino' }}</span>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="font-medium text-gray-700">Endereço:</span>
+                    <span class="text-gray-600 ml-1">{{ criminal.endereco }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Criminal Record Summary -->
+              <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                <h4 class="font-medium text-gray-700 mb-2">Registro Criminal</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span class="font-medium text-gray-600">Total de Crimes:</span>
+                    <span class="text-red-600 font-bold ml-1">{{ criminal.crimes.length }}</span>
+                  </div>
+                  <div>
+                    <span class="font-medium text-gray-600">Desde:</span>
+                    <span class="text-gray-600 ml-1">{{ formatDate(criminal.dataRegistro) }}</span>
+                  </div>
+                </div>
+                <div *ngIf="criminal.crimes.length > 0" class="mt-2">
+                  <span class="font-medium text-gray-600">Último Crime:</span>
+                  <span class="text-gray-600 ml-1">{{ criminal.crimes[criminal.crimes.length - 1].tipo }}</span>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="flex gap-2">
+                <button (click)="viewCriminal(criminal)" 
+                        class="flex-1 bg-pna-blue text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                  Ver Detalhes Completos
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Results -->
+      <div *ngIf="searchResults.length === 0" class="bg-white rounded-lg shadow-sm p-12 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhum criminoso encontrado</h3>
+        <p class="text-gray-500">Não foram encontrados registros que correspondam à sua pesquisa.</p>
+        <p class="text-gray-500 mt-2">Verifique se os dados estão corretos ou tente uma pesquisa diferente.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Criminal Details -->
+<div *ngIf="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-6xl shadow-lg rounded-md bg-white">
+    <div class="mt-3">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h3 class="text-2xl font-bold text-gray-900">Ficha Criminal Completa</h3>
+        <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Content -->
+      <div *ngIf="selectedCriminal" class="space-y-6 max-h-96 overflow-y-auto">
+        <!-- Criminal Identity -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-gray-700 mb-3 text-lg">Dados Pessoais</h4>
+            <div class="space-y-2">
+              <p><strong>Nome Completo:</strong> {{ selectedCriminal.nome }}</p>
+              <p *ngIf="selectedCriminal.apelido"><strong>Alcunha:</strong> "{{ selectedCriminal.apelido }}"</p>
+              <p><strong>Bilhete de Identidade:</strong> {{ selectedCriminal.bi }}</p>
+              <p><strong>Data de Nascimento:</strong> {{ formatDate(selectedCriminal.dataNascimento) }}</p>
+              <p><strong>Idade:</strong> {{ selectedCriminal.idade }} anos</p>
+              <p><strong>Gênero:</strong> {{ selectedCriminal.genero === 'M' ? 'Masculino' : 'Feminino' }}</p>
+              <p><strong>Estado Civil:</strong> {{ selectedCriminal.estadoCivil }}</p>
+              <p><strong>Profissão:</strong> {{ selectedCriminal.profissao }}</p>
+              <p><strong>Nível Acadêmico:</strong> {{ selectedCriminal.nivelAcademico }}</p>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-gray-700 mb-3 text-lg">Status Criminal</h4>
+            <div class="space-y-3">
+              <div>
+                <span class="font-medium">Nível de Periculosidade:</span>
+                <span [ngClass]="getPericulosityClass(selectedCriminal.nivelPericulosidade)" 
+                      class="px-3 py-1 rounded-full text-sm font-medium ml-2">
+                  {{ selectedCriminal.nivelPericulosidade }}
+                </span>
+              </div>
+              <div>
+                <span class="font-medium">Status Atual:</span>
+                <span [ngClass]="getStatusClass(selectedCriminal.status)" 
+                      class="px-3 py-1 rounded-full text-sm font-medium ml-2">
+                  {{ selectedCriminal.status }}
+                </span>
+              </div>
+              <p><strong>Data de Registro:</strong> {{ formatDate(selectedCriminal.dataRegistro) }}</p>
+              <p><strong>Total de Crimes:</strong> <span class="text-red-600 font-bold">{{ selectedCriminal.crimes.length }}</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Family Info -->
+        <div>
+          <h4 class="font-semibold text-gray-700 mb-3 text-lg">Filiação e Contato</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <p><strong>Nome do Pai:</strong> {{ selectedCriminal.nomePai }}</p>
+              <p><strong>Nome da Mãe:</strong> {{ selectedCriminal.nomeMae }}</p>
+            </div>
+            <div class="space-y-2">
+              <p><strong>Endereço:</strong> {{ selectedCriminal.endereco }}</p>
+              <p><strong>Telefone:</strong> {{ selectedCriminal.telefone }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Criminal History -->
+        <div>
+          <h4 class="font-semibold text-gray-700 mb-3 text-lg">Histórico Criminal</h4>
+          <div *ngIf="selectedCriminal.crimes.length > 0" class="space-y-4">
+            <div *ngFor="let crime of selectedCriminal.crimes; let i = index" 
+                 class="border border-gray-200 rounded-lg p-4">
+              <div class="flex justify-between items-start mb-2">
+                <h5 class="font-medium text-gray-800">Crime {{ i + 1 }}: {{ crime.tipo }}</h5>
+                <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs">
+                  {{ crime.numeroProcesso }}
+                </span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div class="space-y-1">
+                  <p><strong>Data:</strong> {{ formatDate(crime.dataOcorrencia) }}</p>
+                  <p><strong>Local:</strong> {{ crime.local }}</p>
+                  <p><strong>Status:</strong> 
+                    <span [ngClass]="{
+                      'text-blue-600': crime.statusProcesso === 'Aberto',
+                      'text-yellow-600': crime.statusProcesso === 'Em Investigação',
+                      'text-orange-600': crime.statusProcesso === 'Em Julgamento',
+                      'text-green-600': crime.statusProcesso === 'Condenado',
+                      'text-gray-600': crime.statusProcesso === 'Arquivado'
+                    }" class="font-medium">
+                      {{ crime.statusProcesso }}
+                    </span>
+                  </p>
+                </div>
+                <div class="space-y-1">
+                  <p *ngIf="crime.sentenca"><strong>Sentença:</strong> {{ crime.sentenca }}</p>
+                  <p *ngIf="crime.dataCondenacao"><strong>Data da Condenação:</strong> {{ formatDate(crime.dataCondenacao) }}</p>
+                </div>
+              </div>
+              <div class="mt-2">
+                <p><strong>Descrição:</strong> {{ crime.descricao }}</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="selectedCriminal.crimes.length === 0" class="text-center py-8 text-gray-500">
+            Nenhum crime registrado
+          </div>
+        </div>
+
+        <!-- Observations -->
+        <div *ngIf="selectedCriminal.observacoes">
+          <h4 class="font-semibold text-gray-700 mb-3 text-lg">Observações</h4>
+          <p class="text-gray-600 bg-gray-50 p-3 rounded">{{ selectedCriminal.observacoes }}</p>
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="flex justify-end gap-4 mt-6 pt-4 border-t">
+        <button (click)="closeModal()" 
+                class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
