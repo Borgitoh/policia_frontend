@@ -16,6 +16,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { RegisterComplaintComponent } from './components/register-complaint/register-complaint.component';
 import { ComplaintListComponent } from './components/complaint-list/complaint-list.component';
 import { CriminalSearchComponent } from './components/criminal-search/criminal-search.component';
+import { AgentManagementComponent } from './components/agent-management/agent-management.component';
+import { SystemLogsComponent } from './components/system-logs/system-logs.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { CriminalSearchComponent } from './components/criminal-search/criminal-s
     SettingsComponent,
     RegisterComplaintComponent,
     ComplaintListComponent,
-    CriminalSearchComponent
+    CriminalSearchComponent,
+    AgentManagementComponent,
+    SystemLogsComponent
   ],
   imports: [
     BrowserModule,
