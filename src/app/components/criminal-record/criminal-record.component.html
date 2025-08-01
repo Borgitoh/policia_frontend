@@ -1,5 +1,31 @@
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h1 class="text-3xl font-bold text-pna-blue flex items-center">
+        <svg class="w-8 h-8 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+        </svg>
+        Registrar Ficha Criminal
+      </h1>
+      <p class="text-gray-600 mt-2">Cadastro completo de criminoso no sistema</p>
+    </div>
+
+    <!-- Alert -->
+    <div *ngIf="showAlert"
+         [ngClass]="{
+           'bg-green-50 border-green-200 text-green-800': alertType === 'success',
+           'bg-red-50 border-red-200 text-red-800': alertType === 'error'
+         }"
+         class="border rounded-lg p-4 mb-6">
+      <div class="flex">
+        <div class="ml-3">
+          <p class="text-sm font-medium">{{ alertMessage }}</p>
+        </div>
+      </div>
+    </div>
+
 <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-full w-full relative">
-  <h1 class="text-xl sm:text-3xl font-bold mb-4 text-gray-800 text-center">Ficha Criminal</h1>
 
   <!-- Histórico de Crimes -->
   <div class="mb-6">
@@ -7,7 +33,7 @@
     <ul id="historico-crimes" class="list-disc list-inside bg-gray-100 p-3 rounded-md shadow-sm">
       <li class="text-gray-600" *ngIf="!historicoCrimes.length"> Nenhum crime adicionado ainda.</li>
       <li *ngFor="let crime of historicoCrimes.controls; let idx = index" class="text-gray-600">
-        {{ crime.value.dataCrime }} - {{ crime.value.descricaoCrime }} 
+        {{ crime.value.dataCrime }} - {{ crime.value.descricaoCrime }}
       </li>
     </ul>
   </div>
@@ -67,7 +93,7 @@
             <option value="F">Licenciatura</option>
           </select>
           </div>
-          
+
         </div>
       </div>
     </div>
