@@ -19,7 +19,7 @@ export interface SystemLog {
 export class SystemLogsComponent implements OnInit {
   logs: SystemLog[] = [];
   filteredLogs: SystemLog[] = [];
-  
+
   filters = {
     level: '',
     module: '',
@@ -131,11 +131,11 @@ export class SystemLogsComponent implements OnInit {
     this.filteredLogs = this.logs.filter(log => {
       const matchesLevel = !this.filters.level || log.level === this.filters.level;
       const matchesModule = !this.filters.module || log.module === this.filters.module;
-      const matchesSearch = !this.filters.search || 
+      const matchesSearch = !this.filters.search ||
         log.action.toLowerCase().includes(this.filters.search.toLowerCase()) ||
         log.user.toLowerCase().includes(this.filters.search.toLowerCase()) ||
         log.details.toLowerCase().includes(this.filters.search.toLowerCase());
-      
+
       let matchesDate = true;
       if (this.filters.dateFrom) {
         const logDate = new Date(log.timestamp);
@@ -218,7 +218,7 @@ export class SystemLogsComponent implements OnInit {
   private generateCSV(): string {
     const headers = ['Timestamp', 'Level', 'Module', 'Action', 'User', 'Details', 'IP'];
     const csvRows = [headers.join(',')];
-    
+
     this.filteredLogs.forEach(log => {
       const row = [
         log.timestamp,
@@ -231,11 +231,15 @@ export class SystemLogsComponent implements OnInit {
       ];
       csvRows.push(row.join(','));
     });
-    
+
     return csvRows.join('\n');
   }
 
   formatTimestamp(timestamp: string): string {
     return new Date(timestamp).toLocaleString('pt-AO');
+  }
+
+  getLogCountByLevel(level: string): number {
+    return this.logs.filter(log => log.level === level).length;
   }
 }

@@ -12,7 +12,7 @@
           </h1>
           <p class="text-gray-600 mt-2">Monitoramento e auditoria das atividades do sistema PNA</p>
         </div>
-        <button (click)="exportLogs()" 
+        <button (click)="exportLogs()"
                 class="mt-4 sm:mt-0 bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition-colors">
           📤 Exportar Logs
         </button>
@@ -25,7 +25,7 @@
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Nível</label>
-          <select [(ngModel)]="filters.level" (change)="applyFilters()" 
+          <select [(ngModel)]="filters.level" (change)="applyFilters()"
                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
             <option value="">Todos os níveis</option>
             <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
@@ -33,7 +33,7 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Módulo</label>
-          <select [(ngModel)]="filters.module" (change)="applyFilters()" 
+          <select [(ngModel)]="filters.module" (change)="applyFilters()"
                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
             <option value="">Todos os módulos</option>
             <option *ngFor="let module of modules" [value]="module">{{ module }}</option>
@@ -41,23 +41,23 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Data Inicial</label>
-          <input type="date" [(ngModel)]="filters.dateFrom" (change)="applyFilters()" 
+          <input type="date" [(ngModel)]="filters.dateFrom" (change)="applyFilters()"
                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Data Final</label>
-          <input type="date" [(ngModel)]="filters.dateTo" (change)="applyFilters()" 
+          <input type="date" [(ngModel)]="filters.dateTo" (change)="applyFilters()"
                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Pesquisar</label>
-          <input type="text" [(ngModel)]="filters.search" (input)="applyFilters()" 
+          <input type="text" [(ngModel)]="filters.search" (input)="applyFilters()"
                  placeholder="Ação, usuário ou detalhes..."
                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
         </div>
       </div>
       <div class="mt-4">
-        <button (click)="clearFilters()" 
+        <button (click)="clearFilters()"
                 class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors">
           Limpar Filtros
         </button>
@@ -72,7 +72,7 @@
       <div class="px-6 py-4 bg-pna-blue text-white">
         <h2 class="text-xl font-bold">Registros de Atividade</h2>
       </div>
-      
+
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead class="bg-gray-50">
@@ -92,7 +92,7 @@
                 {{ formatTimestamp(log.timestamp) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span [ngClass]="getLevelClass(log.level)" 
+                <span [ngClass]="getLevelClass(log.level)"
                       class="px-2 py-1 rounded-full text-xs font-medium flex items-center w-fit">
                   {{ getLevelIcon(log.level) }} {{ log.level }}
                 </span>
@@ -112,7 +112,7 @@
                 {{ log.ip }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button (click)="viewLog(log)" 
+                <button (click)="viewLog(log)"
                         class="text-pna-blue hover:text-blue-900">
                   👁️ Ver Detalhes
                 </button>
@@ -141,25 +141,25 @@
         <div class="text-center p-4 bg-green-50 rounded-lg">
           <h3 class="text-lg font-semibold text-green-800">SUCCESS</h3>
           <p class="text-2xl font-bold text-green-600">
-            {{ logs.filter(l => l.level === 'SUCCESS').length }}
+            {{ getLogCountByLevel('SUCCESS') }}
           </p>
         </div>
         <div class="text-center p-4 bg-blue-50 rounded-lg">
           <h3 class="text-lg font-semibold text-blue-800">INFO</h3>
           <p class="text-2xl font-bold text-blue-600">
-            {{ logs.filter(l => l.level === 'INFO').length }}
+            {{ getLogCountByLevel('INFO') }}
           </p>
         </div>
         <div class="text-center p-4 bg-yellow-50 rounded-lg">
           <h3 class="text-lg font-semibold text-yellow-800">WARNING</h3>
           <p class="text-2xl font-bold text-yellow-600">
-            {{ logs.filter(l => l.level === 'WARNING').length }}
+            {{ getLogCountByLevel('WARNING') }}
           </p>
         </div>
         <div class="text-center p-4 bg-red-50 rounded-lg">
           <h3 class="text-lg font-semibold text-red-800">ERROR</h3>
           <p class="text-2xl font-bold text-red-600">
-            {{ logs.filter(l => l.level === 'ERROR').length }}
+            {{ getLogCountByLevel('ERROR') }}
           </p>
         </div>
       </div>
@@ -188,8 +188,8 @@
             <h4 class="font-semibold text-gray-700 mb-2">Informações Básicas</h4>
             <div class="space-y-2">
               <p><strong>Timestamp:</strong> {{ formatTimestamp(selectedLog.timestamp) }}</p>
-              <p><strong>Nível:</strong> 
-                <span [ngClass]="getLevelClass(selectedLog.level)" 
+              <p><strong>Nível:</strong>
+                <span [ngClass]="getLevelClass(selectedLog.level)"
                       class="px-2 py-1 rounded-full text-xs font-medium ml-2">
                   {{ getLevelIcon(selectedLog.level) }} {{ selectedLog.level }}
                 </span>
@@ -205,12 +205,12 @@
             </div>
           </div>
         </div>
-        
+
         <div>
           <h4 class="font-semibold text-gray-700 mb-2">Ação Executada</h4>
           <p class="bg-gray-50 p-3 rounded">{{ selectedLog.action }}</p>
         </div>
-        
+
         <div>
           <h4 class="font-semibold text-gray-700 mb-2">Detalhes Completos</h4>
           <p class="bg-gray-50 p-3 rounded">{{ selectedLog.details }}</p>
@@ -219,7 +219,7 @@
 
       <!-- Modal Actions -->
       <div class="flex justify-end gap-4 mt-6 pt-4 border-t">
-        <button (click)="closeModal()" 
+        <button (click)="closeModal()"
                 class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
           Fechar
         </button>
