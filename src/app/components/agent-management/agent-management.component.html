@@ -8,11 +8,11 @@
             <svg class="w-8 h-8 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
               <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
             </svg>
-            Gestão de Agentes PNA
+            Gest��o de Agentes PNA
           </h1>
           <p class="text-gray-600 mt-2">Gerenciar agentes da Polícia Nacional de Angola</p>
         </div>
-        <button (click)="openForm()" 
+        <button (click)="openForm()"
                 class="mt-4 sm:mt-0 bg-angola-red text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors">
           ➕ Novo Agente
         </button>
@@ -23,8 +23,8 @@
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
       <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
-          <input type="text" 
-                 [(ngModel)]="searchQuery" 
+          <input type="text"
+                 [(ngModel)]="searchQuery"
                  (input)="applyFilters()"
                  placeholder="Pesquisar por nome, BI ou posto..."
                  class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
@@ -40,14 +40,14 @@
       <div class="px-6 py-4 bg-pna-blue text-white">
         <h2 class="text-xl font-bold">Lista de Agentes</h2>
       </div>
-      
+
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agente</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posto</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Província</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posto/Categoria</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Esquadra</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contato</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Último Login</th>
@@ -63,19 +63,26 @@
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                  {{ agent.posto }}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {{ agent.provincia }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ agent.telefone }}</div>
-                <div class="text-sm text-gray-500">{{ agent.email }}</div>
+                <div>
+                  <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium block mb-1">
+                    {{ agent.posto }}
+                  </span>
+                  <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    {{ agent.categoria }}
+                  </span>
+                </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span [ngClass]="getStatusClass(agent.status)" 
+                <div class="text-sm text-gray-900">{{ agent.esquadra }}</div>
+                <div class="text-xs text-gray-500">{{ agent.provincia }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">📞 {{ agent.telefone }}</div>
+                <div class="text-sm text-gray-500" *ngIf="agent.telefoneEmergencia">🚨 {{ agent.telefoneEmergencia }}</div>
+                <div class="text-sm text-gray-500">✉️ {{ agent.email }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span [ngClass]="getStatusClass(agent.status)"
                       class="px-2 py-1 rounded-full text-xs font-medium">
                   {{ agent.status }}
                 </span>
@@ -85,15 +92,15 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div class="flex space-x-2">
-                  <button (click)="editAgent(agent)" 
+                  <button (click)="editAgent(agent)"
                           class="text-pna-blue hover:text-blue-900">
                     ✏️
                   </button>
-                  <button (click)="toggleStatus(agent)" 
+                  <button (click)="toggleStatus(agent)"
                           class="text-yellow-600 hover:text-yellow-900">
                     🔄
                   </button>
-                  <button (click)="deleteAgent(agent)" 
+                  <button (click)="deleteAgent(agent)"
                           class="text-red-600 hover:text-red-900">
                     🗑️
                   </button>
@@ -137,49 +144,73 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
-            <input type="text" formControlName="nome" 
+            <input type="text" formControlName="nome"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Bilhete de Identidade *</label>
-            <input type="text" formControlName="bi" 
+            <input type="text" formControlName="bi"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Posto *</label>
-            <select formControlName="posto" 
+            <select formControlName="posto"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
               <option value="">Selecione o posto</option>
               <option *ngFor="let posto of postos" [value]="posto">{{ posto }}</option>
             </select>
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Categoria *</label>
+            <select formControlName="categoria"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="">Selecione a categoria</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+            </select>
+          </div>
+          <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Província *</label>
-            <select formControlName="provincia" 
+            <select formControlName="provincia"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
               <option value="">Selecione a província</option>
               <option *ngFor="let provincia of provincias" [value]="provincia">{{ provincia }}</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone *</label>
-            <input type="text" formControlName="telefone" 
+            <label class="block text-sm font-medium text-gray-700 mb-2">Esquadra *</label>
+            <select formControlName="esquadra"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="">Selecione a esquadra</option>
+              <option *ngFor="let esquadra of esquadras" [value]="esquadra">{{ esquadra }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone Principal *</label>
+            <input type="text" formControlName="telefone"
+                   placeholder="Ex: 923456789"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone de Emergência</label>
+            <input type="text" formControlName="telefoneEmergencia"
+                   placeholder="Ex: 944123456"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div class="md:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
-            <input type="email" formControlName="email" 
+            <input type="email" formControlName="email"
+                   placeholder="Ex: agente@pna.gov.ao"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
         </div>
 
         <!-- Form Actions -->
         <div class="flex justify-end gap-4 mt-6 pt-4 border-t">
-          <button type="button" (click)="closeForm()" 
+          <button type="button" (click)="closeForm()"
                   class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
             Cancelar
           </button>
-          <button type="submit" 
+          <button type="submit"
                   [disabled]="!agentForm.valid"
                   class="px-6 py-2 bg-angola-red text-white rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
             {{ isEditing ? 'Atualizar' : 'Cadastrar' }} Agente
