@@ -10,7 +10,7 @@ import { Complaint } from '../../models/complaint.model';
 export class ComplaintListComponent implements OnInit {
   complaints: Complaint[] = [];
   filteredComplaints: Complaint[] = [];
-  
+
   filters = {
     status: '',
     tipoCrime: '',
@@ -91,7 +91,8 @@ export class ComplaintListComponent implements OnInit {
     return new Date(dateString).toLocaleDateString('pt-AO');
   }
 
-  updateComplaintStatus(complaint: Complaint, newStatus: string): void {
+  updateComplaintStatus(complaint: Complaint, event: Event): void {
+    const newStatus = (event.target as HTMLSelectElement).value;
     complaint.status = newStatus as any;
     this.complaintService.updateComplaint(complaint).subscribe(() => {
       this.loadComplaints();

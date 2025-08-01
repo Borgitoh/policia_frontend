@@ -112,7 +112,7 @@
                     class="flex-1 bg-pna-blue text-white px-3 py-2 rounded-md text-sm hover:bg-blue-700">
               Ver Detalhes
             </button>
-            <select (change)="updateComplaintStatus(complaint, ($event.target as HTMLSelectElement).value)"
+            <select (change)="updateComplaintStatus(complaint, $event)"
                     [value]="complaint.status"
                     class="flex-1 border border-gray-300 rounded-md px-2 py-2 text-sm focus:ring-2 focus:ring-pna-blue focus:border-transparent">
               <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
