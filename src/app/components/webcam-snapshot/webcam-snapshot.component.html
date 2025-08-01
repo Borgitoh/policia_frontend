@@ -1,31 +1,79 @@
-<div class="flex justify-center video-container" *ngIf="!error">
-	<video [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" [width]="WIDTH" [height]="HEIGHT"
-		autoplay></video>
-	<canvas [class.show]="isCaptured" [class.hide]="!isCaptured" #canvas id="canvas" [width]="WIDTH"
-		[height]="HEIGHT"></canvas>
+<div class="webcam-container bg-gray-100 rounded-lg p-4 text-center">
+  <!-- Camera Interface -->
+  <div class="relative inline-block rounded-lg overflow-hidden shadow-lg mb-4" *ngIf="!error">
+    <video
+      [style.display]="!isCaptured ? 'block' : 'none'"
+      #video
+      id="video"
+      [width]="WIDTH"
+      [height]="HEIGHT"
+      autoplay
+      class="bg-black rounded-lg">
+    </video>
+    <canvas
+      [style.display]="isCaptured ? 'block' : 'none'"
+      #canvas
+      id="canvas"
+      [width]="WIDTH"
+      [height]="HEIGHT"
+      class="bg-black rounded-lg">
+    </canvas>
+  </div>
+
+  <!-- Camera Controls -->
+  <div class="flex justify-center gap-3 mb-4" *ngIf="!error && !(captures.length>4)">
+    <button
+      *ngIf="!isCaptured"
+      (click)="capture()"
+      class="bg-angola-red text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors flex items-center gap-2">
+      📷 Capturar Foto
+    </button>
+    <button
+      *ngIf="isCaptured"
+      (click)="removeCurrent()"
+      class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
+      🔄 Nova Foto
+    </button>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="text-center p-6 bg-red-50 border border-red-200 rounded-lg">
+    <div class="text-red-600 mb-3">
+      <svg class="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+      </svg>
+      <p class="font-medium">Erro ao acessar a câmera</p>
+    </div>
+    <p class="text-sm text-red-500 mb-4">{{ error }}</p>
+    <button
+      (click)="setupDevices()"
+      class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+      🔄 Tentar Novamente
+    </button>
+  </div>
+
+  <!-- Photos Gallery -->
+  <div *ngIf="captures.length > 0" class="mt-4">
+    <h4 class="text-sm font-medium text-gray-700 mb-2">Fotos Capturadas:</h4>
+    <div class="flex flex-wrap justify-center gap-2">
+      <div
+        *ngFor="let src of captures; let idx = index"
+        class="relative cursor-pointer group"
+        (click)="setPhoto(idx)">
+        <img
+          [src]="src"
+          class="w-16 h-16 rounded-md shadow-md object-cover border-2 border-transparent group-hover:border-pna-blue transition-colors" />
+        <button
+          class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+          (click)="removePhoto(idx); $event.stopPropagation()">
+          ✕
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Photos Message -->
+  <div *ngIf="captures.length === 0 && !error" class="text-center text-gray-500 text-sm mt-2">
+    📷 Clique em "Capturar Foto" para adicionar uma imagem
+  </div>
 </div>
-
-<div class="snap-container" *ngIf="!(captures.length>4)">
-	<button class="w-32 btn btn-primary bg-blue-500 text-white py-2 rounded-md text-lg shadow-md hover:bg-blue-600" *ngIf="!isCaptured" (click)="capture()">Snap Photo</button>
-	<button class="w-32 btn btn-danger bg-blue-500 text-white py-2 rounded-md text-lg shadow-md hover:bg-blue-600" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button>
-
-	<div *ngIf="error" class="text-danger mt-4">
-		{{ error }}. Please click refresh on stackblitz
-		<div class="mt-5">
-			<img src="https://trungk18.com/7e0976255739e721501803ee074f1f94/camera.gif" />
-		</div>
-		</div>
-	</div>
-
-	<ul class="list-none p-0 flex flex-wrap">
-    <li *ngFor="let src of captures; let idx = index" class="cursor-pointer relative m-2" (click)="setPhoto(idx)">
-      <!-- Imagem -->
-      <img [src]="src" class="w-20 h-20 rounded-md shadow-md object-cover" />
-      <button
-        class="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-red-700"
-        (click)="removePhoto(idx)"
-      >
-        ✕
-      </button>
-    </li>
-  </ul>
