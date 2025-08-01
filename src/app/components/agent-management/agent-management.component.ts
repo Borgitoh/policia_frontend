@@ -6,8 +6,11 @@ export interface Agent {
   nome: string;
   bi: string;
   posto: string;
+  categoria: string;
   provincia: string;
+  esquadra: string;
   telefone: string;
+  telefoneEmergencia: string;
   email: string;
   dataAdmissao: string;
   status: 'Ativo' | 'Inativo' | 'Suspenso';
@@ -33,11 +36,24 @@ export class AgentManagementComponent implements OnInit {
     'Chefe Principal', 'Chefe', 'Subchefe', 'Agente Principal', 'Agente'
   ];
 
+  categorias = [
+    'Investigação Criminal', 'Ordem Pública', 'Trânsito', 'Fronteiras',
+    'Administrativa', 'Científica', 'Económica', 'Ambiental', 'Cibercrime'
+  ];
+
   provincias = [
     'Luanda', 'Bengo', 'Benguela', 'Bié', 'Cabinda', 'Cuando Cubango',
     'Cuanza Norte', 'Cuanza Sul', 'Cunene', 'Huambo', 'Huíla',
     'Lunda Norte', 'Lunda Sul', 'Malanje', 'Moxico', 'Namibe',
     'Uíge', 'Zaire'
+  ];
+
+  esquadras = [
+    '1ª Esquadra - Ingombota', '2ª Esquadra - Maianga', '3ª Esquadra - Rangel',
+    '4ª Esquadra - Sambizanga', '5ª Esquadra - Samba', '6ª Esquadra - Kilamba Kiaxi',
+    '7ª Esquadra - Cazenga', '8ª Esquadra - Viana', '9ª Esquadra - Cacuaco',
+    '10ª Esquadra - Belas', 'Esquadra Central', 'Esquadra do Aeroporto',
+    'Esquadra Rodoviária', 'Esquadra Portuária', 'Esquadra Ferroviária'
   ];
 
   constructor(private fb: FormBuilder) {
@@ -54,8 +70,11 @@ export class AgentManagementComponent implements OnInit {
       nome: ['', Validators.required],
       bi: ['', Validators.required],
       posto: ['', Validators.required],
+      categoria: ['', Validators.required],
       provincia: ['', Validators.required],
+      esquadra: ['', Validators.required],
       telefone: ['', Validators.required],
+      telefoneEmergencia: [''],
       email: ['', [Validators.required, Validators.email]]
     });
   }
@@ -67,8 +86,11 @@ export class AgentManagementComponent implements OnInit {
         nome: 'Carlos Manuel Santos',
         bi: '123456789LA041',
         posto: 'Comissário',
+        categoria: 'Investigação Criminal',
         provincia: 'Luanda',
+        esquadra: '1ª Esquadra - Ingombota',
         telefone: '923456789',
+        telefoneEmergencia: '944123456',
         email: 'carlos.santos@pna.gov.ao',
         dataAdmissao: '2020-03-15',
         status: 'Ativo',
@@ -79,8 +101,11 @@ export class AgentManagementComponent implements OnInit {
         nome: 'Ana Maria Silva',
         bi: '987654321LA042',
         posto: 'Intendente',
+        categoria: 'Ordem Pública',
         provincia: 'Luanda',
+        esquadra: '2ª Esquadra - Maianga',
         telefone: '912345678',
+        telefoneEmergencia: '933987654',
         email: 'ana.silva@pna.gov.ao',
         dataAdmissao: '2019-08-20',
         status: 'Ativo',
@@ -91,8 +116,11 @@ export class AgentManagementComponent implements OnInit {
         nome: 'João Fernando Costa',
         bi: '456789123LA043',
         posto: 'Agente Principal',
+        categoria: 'Trânsito',
         provincia: 'Benguela',
+        esquadra: 'Esquadra Central',
         telefone: '934567890',
+        telefoneEmergencia: '955456789',
         email: 'joao.costa@pna.gov.ao',
         dataAdmissao: '2021-01-10',
         status: 'Inativo',
@@ -133,7 +161,7 @@ export class AgentManagementComponent implements OnInit {
   onSubmit(): void {
     if (this.agentForm.valid) {
       const formData = this.agentForm.value;
-      
+
       if (this.isEditing && this.selectedAgent) {
         // Update existing agent
         const index = this.agents.findIndex(a => a.id === this.selectedAgent!.id);
@@ -151,7 +179,7 @@ export class AgentManagementComponent implements OnInit {
         };
         this.agents.push(newAgent);
       }
-      
+
       this.applyFilters();
       this.closeForm();
     }
