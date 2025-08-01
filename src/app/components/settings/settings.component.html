@@ -1,91 +1,192 @@
-<div class="bg-gray-100 min-h-screen">
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Configurações do Sistema</h1>
-
-    <!-- Grid Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <!-- Gerenciamento de Permissões -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Gerenciamento de Permissões</h2>
-            <p class="text-gray-600 mb-4">Defina níveis de acesso para usuários.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Gerenciar Permissões</button>
-        </div>
-
-        <!-- Personalização do Sistema -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Personalização do Sistema</h2>
-            <p class="text-gray-600 mb-4">Altere o tema, cores e logotipo do sistema.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Personalizar</button>
-        </div>
-
-        <!-- Backup e Restauração -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Backup e Restauração</h2>
-            <p class="text-gray-600 mb-4">Faça backup ou restaure dados do sistema.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Gerenciar Backup</button>
-        </div>
-
-        <!-- Configurações de Conta -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Configurações de Conta</h2>
-            <p class="text-gray-600 mb-4">Atualize sua senha, e-mail e outras informações.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Configurar Conta</button>
-        </div>
-
-        <!-- Logs do Sistema -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Logs do Sistema</h2>
-            <p class="text-gray-600 mb-4">Visualize atividades recentes no sistema.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700" onclick="document.getElementById('logs-table').classList.toggle('hidden')">Ver Logs</button>
-
-            <!-- Tabela de Logs (oculta inicialmente) -->
-            <div id="logs-table" class="hidden mt-4 overflow-x-auto">
-                <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 border-b text-left">Data</th>
-                            <th class="px-4 py-2 border-b text-left">Usuário</th>
-                            <th class="px-4 py-2 border-b text-left">Ação</th>
-                            <th class="px-4 py-2 border-b text-left">Descrição</th>
-                            <th class="px-4 py-2 border-b text-left">IP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="px-4 py-2 border-b">2025-01-02</td>
-                            <td class="px-4 py-2 border-b">Admin</td>
-                            <td class="px-4 py-2 border-b">Login</td>
-                            <td class="px-4 py-2 border-b">Usuário autenticado</td>
-                            <td class="px-4 py-2 border-b">192.168.1.1</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">2025-01-02</td>
-                            <td class="px-4 py-2 border-b">Operador</td>
-                            <td class="px-4 py-2 border-b">Consulta</td>
-                            <td class="px-4 py-2 border-b">Consultou ficha criminal</td>
-                            <td class="px-4 py-2 border-b">192.168.1.2</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">2025-01-02</td>
-                            <td class="px-4 py-2 border-b">Admin</td>
-                            <td class="px-4 py-2 border-b">Logout</td>
-                            <td class="px-4 py-2 border-b">Usuário desconectado</td>
-                            <td class="px-4 py-2 border-b">192.168.1.1</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Integração de Dispositivos -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Integração de Dispositivos</h2>
-            <p class="text-gray-600 mb-4">Configure dispositivos conectados ao sistema.</p>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Configurar Dispositivos</button>
-        </div>
-
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h1 class="text-3xl font-bold text-pna-blue flex items-center">
+        <svg class="w-8 h-8 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+        </svg>
+        Configurações do Sistema
+      </h1>
+      <p class="text-gray-600 mt-2">Gerenciar configurações gerais do sistema PNA</p>
     </div>
-</div>
 
+    <!-- Quick Settings Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <!-- User Management -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 p-3 rounded-full">
+            <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-lg font-semibold text-gray-800">Usuários</h3>
+            <p class="text-sm text-gray-600">Gerenciar agentes</p>
+          </div>
+        </div>
+        <button routerLink="/home/agent-management" class="w-full bg-pna-blue text-white py-2 rounded-md hover:bg-blue-700 transition-colors">
+          Gerenciar Agentes
+        </button>
+      </div>
+
+      <!-- System Logs -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center mb-4">
+          <div class="bg-green-100 p-3 rounded-full">
+            <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-lg font-semibold text-gray-800">Logs</h3>
+            <p class="text-sm text-gray-600">Histórico do sistema</p>
+          </div>
+        </div>
+        <button routerLink="/home/system-logs" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-colors">
+          Ver Logs
+        </button>
+      </div>
+
+      <!-- Backup -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center mb-4">
+          <div class="bg-yellow-100 p-3 rounded-full">
+            <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-lg font-semibold text-gray-800">Backup</h3>
+            <p class="text-sm text-gray-600">Cópia de segurança</p>
+          </div>
+        </div>
+        <button class="w-full bg-yellow-600 text-white py-2 rounded-md hover:bg-yellow-700 transition-colors">
+          Fazer Backup
+        </button>
+      </div>
+    </div>
+
+    <!-- Detailed Settings -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- System Configuration -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+          🔧 Configurações do Sistema
+        </h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <div>
+              <h4 class="font-medium text-gray-800">Notificações por Email</h4>
+              <p class="text-sm text-gray-600">Receber alertas por email</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <div>
+              <h4 class="font-medium text-gray-800">Logs de Auditoria</h4>
+              <p class="text-sm text-gray-600">Registrar todas as ações</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <div>
+              <h4 class="font-medium text-gray-800">Backup Automático</h4>
+              <p class="text-sm text-gray-600">Backup diário às 02:00</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Settings -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+          🔒 Configurações de Segurança
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tempo de Sessão (minutos)</label>
+            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="30">30 minutos</option>
+              <option value="60" selected>60 minutos</option>
+              <option value="120">120 minutos</option>
+              <option value="240">240 minutos</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nível de Log</label>
+            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="basic">Básico</option>
+              <option value="detailed" selected>Detalhado</option>
+              <option value="full">Completo</option>
+            </select>
+          </div>
+
+          <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h4 class="font-medium text-yellow-800 mb-1">⚠️ Última Atualização</h4>
+            <p class="text-sm text-yellow-700">Sistema atualizado em: 22/12/2024</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+        📊 Informações do Sistema
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center p-4 bg-gray-50 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-800">Versão</h3>
+          <p class="text-2xl font-bold text-pna-blue">v2.0.1</p>
+          <p class="text-sm text-gray-600">Sistema PNA</p>
+        </div>
+        <div class="text-center p-4 bg-gray-50 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-800">Uptime</h3>
+          <p class="text-2xl font-bold text-green-600">15 dias</p>
+          <p class="text-sm text-gray-600">Online desde 07/12/2024</p>
+        </div>
+        <div class="text-center p-4 bg-gray-50 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-800">Usuários Ativos</h3>
+          <p class="text-2xl font-bold text-blue-600">12</p>
+          <p class="text-sm text-gray-600">Agentes conectados</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+        🔄 Ações do Sistema
+      </h2>
+      <div class="flex flex-wrap gap-4">
+        <button class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition-colors">
+          💾 Salvar Configurações
+        </button>
+        <button class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
+          🔄 Reiniciar Serviços
+        </button>
+        <button class="bg-yellow-600 text-white px-6 py-3 rounded-md hover:bg-yellow-700 transition-colors">
+          📤 Exportar Dados
+        </button>
+        <button class="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors">
+          🧹 Limpar Cache
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
