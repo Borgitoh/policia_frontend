@@ -1,49 +1,203 @@
-<main class="flex-1 bg-white p-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6">Bem-vindo ao Painel</h1>
-
-  <!-- Cards Section -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="bg-gray-100 shadow rounded-lg p-6">
-      <h2 class="text-lg font-semibold text-gray-700">Fichas Criminais</h2>
-      <p class="mt-2 text-gray-500">Total: <span class="font-bold text-gray-800">150</span></p>
-    </div>
-    <div class="bg-gray-100 shadow rounded-lg p-6">
-      <h2 class="text-lg font-semibold text-gray-700">Usuários Ativos</h2>
-      <p class="mt-2 text-gray-500">Total: <span class="font-bold text-gray-800">45</span></p>
-    </div>
-    <div class="bg-gray-100 shadow rounded-lg p-6">
-      <h2 class="text-lg font-semibold text-gray-700">Relatórios Emitidos</h2>
-      <p class="mt-2 text-gray-500">Total: <span class="font-bold text-gray-800">30</span></p>
+<main class="flex-1 bg-gray-50 p-4 sm:p-8">
+  <!-- Header -->
+  <div class="bg-gradient-to-r from-pna-blue to-blue-700 text-white rounded-lg p-6 mb-8">
+    <h1 class="text-3xl font-bold mb-2">Dashboard - Polícia Nacional de Angola</h1>
+    <p class="text-blue-100">Sistema de Gestão Criminal - Tempo Real</p>
+    <div class="mt-4 text-sm text-blue-100">
+      Último update: {{ getCurrentDateTime() }}
     </div>
   </div>
 
-  <div class="mt-8">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Atividades Recentes</h2>
-    <table class="w-full bg-white shadow rounded-lg overflow-hidden">
-      <thead class="bg-blue-600 text-white">
-        <tr>
-          <th class="px-4 py-2 text-left">Data</th>
-          <th class="px-4 py-2 text-left">Descrição</th>
-          <th class="px-4 py-2 text-left">Status</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200">
-        <tr>
-          <td class="px-4 py-2">2024-12-22</td>
-          <td class="px-4 py-2">Cadastro de ficha criminal</td>
-          <td class="px-4 py-2 text-green-600 font-bold">Concluído</td>
-        </tr>
-        <tr>
-          <td class="px-4 py-2">2024-12-21</td>
-          <td class="px-4 py-2">Atualização de relatório</td>
-          <td class="px-4 py-2 text-yellow-600 font-bold">Pendente</td>
-        </tr>
-        <tr>
-          <td class="px-4 py-2">2024-12-20</td>
-          <td class="px-4 py-2">Criação de usuário</td>
-          <td class="px-4 py-2 text-red-600 font-bold">Erro</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Statistics Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Total Criminals -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-angola-red">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Criminosos Registrados</h3>
+          <p class="text-3xl font-bold text-angola-red">{{ criminalStats?.totalCriminosos || 0 }}</p>
+          <p class="text-sm text-gray-500 mt-1">Total no sistema</p>
+        </div>
+        <div class="bg-angola-red bg-opacity-10 p-3 rounded-full">
+          <svg class="w-8 h-8 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wanted Criminals -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-red-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Procurados</h3>
+          <p class="text-3xl font-bold text-red-600">{{ criminalStats?.procurados || 0 }}</p>
+          <p class="text-sm text-gray-500 mt-1">Em liberdade</p>
+        </div>
+        <div class="bg-red-100 p-3 rounded-full">
+          <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Complaints -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-angola-yellow">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Queixas Registradas</h3>
+          <p class="text-3xl font-bold text-yellow-600">{{ complaintStats?.totalQueixas || 0 }}</p>
+          <p class="text-sm text-gray-500 mt-1">Todas as queixas</p>
+        </div>
+        <div class="bg-yellow-100 p-3 rounded-full">
+          <svg class="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open Cases -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Casos Abertos</h3>
+          <p class="text-3xl font-bold text-blue-600">{{ complaintStats?.abertas || 0 }}</p>
+          <p class="text-sm text-gray-500 mt-1">Investigação ativa</p>
+        </div>
+        <div class="bg-blue-100 p-3 rounded-full">
+          <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm8 8a1 1 0 100-2h3a1 1 0 100 2h-3z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Activity Summary -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+        <span class="bg-angola-red w-3 h-3 rounded-full mr-3"></span>
+        Atividade de Hoje
+      </h2>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+          <span class="text-gray-700">Novas queixas registradas</span>
+          <span class="font-bold text-angola-red">{{ complaintStats?.queixasHoje || 0 }}</span>
+        </div>
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+          <span class="text-gray-700">Criminosos registrados</span>
+          <span class="font-bold text-angola-red">{{ criminalStats?.registrosHoje || 0 }}</span>
+        </div>
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+          <span class="text-gray-700">Casos em investigação</span>
+          <span class="font-bold text-angola-red">{{ complaintStats?.emInvestigacao || 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+        <span class="bg-angola-yellow w-3 h-3 rounded-full mr-3"></span>
+        Alerta de Periculosidade
+      </h2>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center p-3 bg-red-50 rounded border border-red-200">
+          <span class="text-red-700">Criminosos de alta periculosidade</span>
+          <span class="font-bold text-red-600">{{ criminalStats?.periculosidadeAlta || 0 }}</span>
+        </div>
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+          <span class="text-gray-700">Condenados</span>
+          <span class="font-bold text-green-600">{{ criminalStats?.condenados || 0 }}</span>
+        </div>
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+          <span class="text-gray-700">Casos resolvidos</span>
+          <span class="font-bold text-green-600">{{ complaintStats?.resolvidas || 0 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+      <svg class="w-6 h-6 mr-3 text-pna-blue" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+      </svg>
+      Ações Rápidas
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <button routerLink="/home/register-complaint" class="p-4 bg-angola-red text-white rounded-lg hover:bg-red-700 transition-colors">
+        <svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+        </svg>
+        <div class="text-sm font-medium">Registrar Queixa</div>
+      </button>
+
+      <button routerLink="/home/criminal-search" class="p-4 bg-pna-blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+        </svg>
+        <div class="text-sm font-medium">Consultar Criminoso</div>
+      </button>
+
+      <button routerLink="/home/complaint-list" class="p-4 bg-angola-yellow text-white rounded-lg hover:bg-yellow-600 transition-colors">
+        <svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+          <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
+        </svg>
+        <div class="text-sm font-medium">Lista de Queixas</div>
+      </button>
+
+      <button routerLink="/home/criminal-records" class="p-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+        <svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+        </svg>
+        <div class="text-sm font-medium">Ficha Criminal</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Recent Activities -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="px-6 py-4 bg-pna-blue text-white">
+      <h2 class="text-xl font-bold flex items-center">
+        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+        </svg>
+        Atividades Recentes
+      </h2>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descrição</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let activity of recentActivities">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ activity.date }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span [ngClass]="getActivityTypeClass(activity.type)" class="px-2 py-1 rounded-full text-xs font-medium">
+                {{ activity.type }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-900">{{ activity.description }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span [ngClass]="getStatusClass(activity.status)" class="px-2 py-1 rounded-full text-xs font-medium">
+                {{ activity.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </main>
