@@ -12,7 +12,7 @@
     </div>
 
     <!-- Alert -->
-    <div *ngIf="showAlert" 
+    <div *ngIf="showAlert"
          [ngClass]="{
            'bg-green-50 border-green-200 text-green-800': alertType === 'success',
            'bg-yellow-50 border-yellow-200 text-yellow-800': alertType === 'warning',
@@ -37,7 +37,7 @@
         </div>
         <div>
           <p><strong>Crimes anteriores:</strong> {{ existingCriminal.crimes.length }}</p>
-          <p><strong>Periculosidade:</strong> 
+          <p><strong>Periculosidade:</strong>
             <span [ngClass]="{
               'bg-green-500': existingCriminal.nivelPericulosidade === 'Baixo',
               'bg-yellow-500': existingCriminal.nivelPericulosidade === 'Médio',
@@ -54,7 +54,7 @@
 
     <!-- Form -->
     <form [formGroup]="complaintForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      
+
       <!-- Tipo de Crime -->
       <div class="bg-white rounded-lg shadow-sm p-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
@@ -79,37 +79,37 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
-            <input type="text" formControlName="nome" 
+            <input type="text" formControlName="nome"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Bilhete de Identidade *</label>
-            <input type="text" formControlName="bi" 
+            <input type="text" formControlName="bi"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Telefone *</label>
-            <input type="text" formControlName="telefone" 
+            <input type="text" formControlName="telefone"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div class="md:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-2">Endereço *</label>
-            <input type="text" formControlName="endereco" 
+            <input type="text" formControlName="endereco"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <input type="email" formControlName="email" 
+            <input type="email" formControlName="email"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Profissão</label>
-            <input type="text" formControlName="profissao" 
+            <input type="text" formControlName="profissao"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Relação com o Suspeito *</label>
-            <select formControlName="relacaoSuspeito" 
+            <select formControlName="relacaoSuspeito"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
               <option value="">Selecione</option>
               <option value="Desconhecido">Desconhecido</option>
@@ -127,38 +127,44 @@
       <div class="bg-white rounded-lg shadow-sm p-6" formGroupName="suspeito">
         <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
           <h2 class="text-xl font-semibold text-gray-800">Dados do Suspeito</h2>
-          <button type="button" (click)="searchCriminal()" 
+          <button type="button" (click)="searchCriminal()"
                   [disabled]="isSearching"
-                  class="bg-pna-blue text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50">
+                  class="bg-pna-blue text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors">
             <span *ngIf="!isSearching">🔍 Verificar no Sistema</span>
-            <span *ngIf="isSearching">Pesquisando...</span>
+            <span *ngIf="isSearching">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Pesquisando...
+            </span>
           </button>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
-            <input type="text" formControlName="nome" 
+            <input type="text" formControlName="nome"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Alcunha</label>
-            <input type="text" formControlName="apelido" 
+            <input type="text" formControlName="apelido"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Bilhete de Identidade</label>
-            <input type="text" formControlName="bi" 
+            <input type="text" formControlName="bi"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Idade</label>
-            <input type="number" formControlName="idade" 
+            <input type="number" formControlName="idade"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Gênero</label>
-            <select formControlName="genero" 
+            <select formControlName="genero"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
               <option value="">Selecione</option>
               <option value="M">Masculino</option>
@@ -167,12 +173,12 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Profissão</label>
-            <input type="text" formControlName="profissao" 
+            <input type="text" formControlName="profissao"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div class="md:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-2">Endereço</label>
-            <input type="text" formControlName="endereco" 
+            <input type="text" formControlName="endereco"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
@@ -198,17 +204,17 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Data da Ocorrência *</label>
-            <input type="date" formControlName="data" 
+            <input type="date" formControlName="data"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Hora da Ocorrência *</label>
-            <input type="time" formControlName="hora" 
+            <input type="time" formControlName="hora"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Província *</label>
-            <select formControlName="provincia" 
+            <select formControlName="provincia"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
               <option value="">Selecione a província</option>
               <option *ngFor="let provincia of provincias" [value]="provincia">{{ provincia }}</option>
@@ -216,12 +222,12 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Município *</label>
-            <input type="text" formControlName="municipio" 
+            <input type="text" formControlName="municipio"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
           </div>
           <div class="md:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-2">Local Específico *</label>
-            <input type="text" formControlName="local" 
+            <input type="text" formControlName="local"
                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent"
                    placeholder="Ex: Rua, bairro, ponto de referência...">
           </div>
@@ -238,21 +244,21 @@
       <div class="bg-white rounded-lg shadow-sm p-6">
         <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
           <h2 class="text-xl font-semibold text-gray-800">Testemunhas</h2>
-          <button type="button" (click)="addTestemunha()" 
+          <button type="button" (click)="addTestemunha()"
                   class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
             + Adicionar Testemunha
           </button>
         </div>
-        
+
         <div *ngIf="testemunhas.length === 0" class="text-gray-500 text-center py-4">
           Nenhuma testemunha adicionada
         </div>
 
-        <div *ngFor="let testemunha of testemunhas.controls; let i = index" 
+        <div *ngFor="let testemunha of testemunhas.controls; let i = index"
              [formGroupName]="i" class="border border-gray-200 rounded-lg p-4 mb-4">
           <div class="flex justify-between items-center mb-3">
             <h3 class="font-medium text-gray-800">Testemunha {{ i + 1 }}</h3>
-            <button type="button" (click)="removeTestemunha(i)" 
+            <button type="button" (click)="removeTestemunha(i)"
                     class="text-red-600 hover:text-red-800">
               🗑️ Remover
             </button>
@@ -260,17 +266,17 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Nome</label>
-              <input type="text" formControlName="nome" 
+              <input type="text" formControlName="nome"
                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
-              <input type="text" formControlName="telefone" 
+              <input type="text" formControlName="telefone"
                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
             </div>
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-gray-700 mb-2">Endereço</label>
-              <input type="text" formControlName="endereco" 
+              <input type="text" formControlName="endereco"
                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
             </div>
             <div class="md:col-span-2">
@@ -298,11 +304,11 @@
       <!-- Botões -->
       <div class="bg-white rounded-lg shadow-sm p-6">
         <div class="flex flex-col sm:flex-row gap-4 justify-end">
-          <button type="button" (click)="resetForm()" 
+          <button type="button" (click)="resetForm()"
                   class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
             Limpar Formulário
           </button>
-          <button type="submit" 
+          <button type="submit"
                   [disabled]="!complaintForm.valid"
                   class="px-6 py-2 bg-angola-red text-white rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
             Registrar Queixa
