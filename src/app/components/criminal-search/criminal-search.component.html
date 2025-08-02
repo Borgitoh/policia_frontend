@@ -138,6 +138,15 @@
 
     <!-- Search Results -->
     <div *ngIf="hasSearched">
+      <!-- Face Recognition Results Header -->
+      <div *ngIf="searchMode === 'face' && faceSearchResults.length > 0" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <h3 class="text-lg font-semibold text-blue-800 mb-2">🤖 Resultados do Reconhecimento Facial</h3>
+        <p class="text-sm text-blue-700">
+          Foram encontradas {{ faceSearchResults.length }} possível(is) correspondência(s) usando análise facial.
+          <br><span class="text-xs italic">* Os resultados são baseados em similaridade facial e podem requerer verificação manual.</span>
+        </p>
+      </div>
+
       <!-- Results Found -->
       <div *ngIf="searchResults.length > 0">
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
