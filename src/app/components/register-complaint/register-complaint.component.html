@@ -141,6 +141,39 @@
           </button>
         </div>
 
+        <!-- Resultados da Busca -->
+        <div *ngIf="criminalSearchPerformed && !isSearching" class="mb-6 p-4 rounded-lg"
+             [ngClass]="existingCriminal ? 'bg-red-50 border border-red-200' : 'bg-green-50 border border-green-200'">
+          <div *ngIf="existingCriminal" class="text-red-800">
+            <h4 class="font-semibold mb-2">⚠️ Criminoso Encontrado no Sistema!</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <p><strong>Nome:</strong> {{ existingCriminal.nome }}</p>
+                <p *ngIf="existingCriminal.apelido"><strong>Alcunha:</strong> {{ existingCriminal.apelido }}</p>
+                <p><strong>BI:</strong> {{ existingCriminal.bi }}</p>
+              </div>
+              <div>
+                <p><strong>Crimes Anteriores:</strong> {{ existingCriminal.crimes.length }}</p>
+                <p><strong>Periculosidade:</strong>
+                  <span [ngClass]="{
+                    'text-green-600': existingCriminal.nivelPericulosidade === 'Baixo',
+                    'text-yellow-600': existingCriminal.nivelPericulosidade === 'Médio',
+                    'text-orange-600': existingCriminal.nivelPericulosidade === 'Alto',
+                    'text-red-600': existingCriminal.nivelPericulosidade === 'Extremo'
+                  }" class="font-semibold">
+                    {{ existingCriminal.nivelPericulosidade }}
+                  </span>
+                </p>
+                <p><strong>Status:</strong> {{ existingCriminal.status }}</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!existingCriminal" class="text-green-800">
+            <h4 class="font-semibold">✅ Suspeito não encontrado no sistema</h4>
+            <p class="text-sm">Este será um novo registro no sistema.</p>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
