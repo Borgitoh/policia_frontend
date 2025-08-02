@@ -13,25 +13,125 @@
 
     <!-- Search Section -->
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-      <div class="flex flex-col sm:flex-row gap-4">
+      <div class="mb-4">
+        <div class="flex justify-center mb-4">
+          <div class="flex bg-gray-100 rounded-lg p-1">
+            <button
+              (click)="setSearchMode('text')"
+              [ngClass]="searchMode === 'text' ? 'bg-white shadow-sm' : ''"
+              class="px-4 py-2 rounded-md transition-colors">
+              📝 Busca por Texto
+            </button>
+            <button
+              (click)="setSearchMode('face')"
+              [ngClass]="searchMode === 'face' ? 'bg-white shadow-sm' : ''"
+              class="px-4 py-2 rounded-md transition-colors">
+              🤳 Reconhecimento Facial
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Search -->
+      <div *ngIf="searchMode === 'text'" class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
-          <input type="text" 
-                 [(ngModel)]="searchQuery" 
+          <input type="text"
+                 [(ngModel)]="searchQuery"
                  (keydown)="onEnterKey($event)"
                  placeholder="Digite o nome, alcunha ou BI do criminoso..."
                  class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-pna-blue focus:border-transparent">
         </div>
         <div class="flex gap-2">
-          <button (click)="searchCriminals()" 
+          <button (click)="searchCriminals()"
                   [disabled]="!searchQuery.trim() || isSearching"
                   class="bg-pna-blue text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
             <span *ngIf="!isSearching">🔍 Pesquisar</span>
             <span *ngIf="isSearching">Pesquisando...</span>
           </button>
-          <button (click)="clearSearch()" 
+          <button (click)="clearSearch()"
                   class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">
             Limpar
           </button>
+        </div>
+      </div>
+
+      <!-- Face Recognition Search -->
+      <div *ngIf="searchMode === 'face'" class="text-center">
+        <div class="max-w-md mx-auto">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">🤳 Reconhecimento Facial</h3>
+
+          <!-- Photo Upload or Camera -->
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4">
+            <div *ngIf="!faceSearchPhoto" class="space-y-4">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <div class="text-gray-600">
+                <p class="text-sm mb-4">Carregue uma foto ou use a câmera para identificar o criminoso</p>
+                <div class="flex justify-center gap-3">
+                  <button (click)="startCamera()"
+                          [disabled]="isCameraActive"
+                          class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50">
+                    📷 Usar Câmera
+                  </button>
+                  <label class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 cursor-pointer">
+                    📁 Carregar Foto
+                    <input type="file" accept="image/*" (change)="onFileSelected($event)" class="hidden">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Camera View -->
+            <div *ngIf="isCameraActive && !faceSearchPhoto" class="space-y-4">
+              <video #faceVideo autoplay class="w-full max-w-sm mx-auto rounded-lg"></video>
+              <div class="flex justify-center gap-3">
+                <button (click)="captureFromCamera()"
+                        class="bg-angola-red text-white px-4 py-2 rounded-md hover:bg-red-700">
+                  📸 Capturar
+                </button>
+                <button (click)="stopCamera()"
+                        class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                  ❌ Cancelar
+                </button>
+              </div>
+            </div>
+
+            <!-- Selected Photo -->
+            <div *ngIf="faceSearchPhoto" class="space-y-4">
+              <img [src]="faceSearchPhoto" class="w-48 h-48 object-cover mx-auto rounded-lg border">
+              <div class="flex justify-center gap-3">
+                <button (click)="searchByFace()"
+                        [disabled]="isFaceSearching"
+                        class="bg-angola-red text-white px-6 py-2 rounded-md hover:bg-red-700 disabled:opacity-50">
+                  <span *ngIf="!isFaceSearching">🔍 Buscar por Rosto</span>
+                  <span *ngIf="isFaceSearching">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Analisando...
+                  </span>
+                </button>
+                <button (click)="clearFaceSearch()"
+                        class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                  🔄 Nova Foto
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Face Search Results -->
+          <div *ngIf="faceSearchResults.length > 0" class="bg-green-50 border border-green-200 rounded-lg p-4">
+            <h4 class="font-semibold text-green-800 mb-2">✅ Correspondências Encontradas!</h4>
+            <p class="text-sm text-green-700">{{ faceSearchResults.length }} possível(is) correspondência(s) encontrada(s).</p>
+          </div>
+
+          <div *ngIf="hasFaceSearched && faceSearchResults.length === 0" class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h4 class="font-semibold text-yellow-800 mb-2">⚠️ Nenhuma Correspondência</h4>
+            <p class="text-sm text-yellow-700">Não foi possível encontrar criminosos correspondentes a esta foto.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -44,11 +144,11 @@
           <h2 class="text-xl font-semibold text-gray-800 mb-4">
             Resultados da Pesquisa ({{ searchResults.length }} encontrado{{ searchResults.length > 1 ? 's' : '' }})
           </h2>
-          
+
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div *ngFor="let criminal of searchResults" 
+            <div *ngFor="let criminal of searchResults"
                  class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-              
+
               <!-- Criminal Header -->
               <div class="flex justify-between items-start mb-4">
                 <div class="flex-1">
@@ -57,11 +157,11 @@
                   <p class="text-sm text-gray-500 mt-1">BI: {{ criminal.bi }}</p>
                 </div>
                 <div class="flex flex-col items-end space-y-2">
-                  <span [ngClass]="getPericulosityClass(criminal.nivelPericulosidade)" 
+                  <span [ngClass]="getPericulosityClass(criminal.nivelPericulosidade)"
                         class="px-3 py-1 rounded-full text-xs font-medium">
                     {{ criminal.nivelPericulosidade }}
                   </span>
-                  <span [ngClass]="getStatusClass(criminal.status)" 
+                  <span [ngClass]="getStatusClass(criminal.status)"
                         class="px-3 py-1 rounded-full text-xs font-medium">
                     {{ criminal.status }}
                   </span>
@@ -107,7 +207,7 @@
 
               <!-- Actions -->
               <div class="flex gap-2">
-                <button (click)="viewCriminal(criminal)" 
+                <button (click)="viewCriminal(criminal)"
                         class="flex-1 bg-pna-blue text-white px-4 py-2 rounded-md hover:bg-blue-700">
                   Ver Detalhes Completos
                 </button>
@@ -162,20 +262,20 @@
               <p><strong>Nível Acadêmico:</strong> {{ selectedCriminal.nivelAcademico }}</p>
             </div>
           </div>
-          
+
           <div>
             <h4 class="font-semibold text-gray-700 mb-3 text-lg">Status Criminal</h4>
             <div class="space-y-3">
               <div>
                 <span class="font-medium">Nível de Periculosidade:</span>
-                <span [ngClass]="getPericulosityClass(selectedCriminal.nivelPericulosidade)" 
+                <span [ngClass]="getPericulosityClass(selectedCriminal.nivelPericulosidade)"
                       class="px-3 py-1 rounded-full text-sm font-medium ml-2">
                   {{ selectedCriminal.nivelPericulosidade }}
                 </span>
               </div>
               <div>
                 <span class="font-medium">Status Atual:</span>
-                <span [ngClass]="getStatusClass(selectedCriminal.status)" 
+                <span [ngClass]="getStatusClass(selectedCriminal.status)"
                       class="px-3 py-1 rounded-full text-sm font-medium ml-2">
                   {{ selectedCriminal.status }}
                 </span>
@@ -205,7 +305,7 @@
         <div>
           <h4 class="font-semibold text-gray-700 mb-3 text-lg">Histórico Criminal</h4>
           <div *ngIf="selectedCriminal.crimes.length > 0" class="space-y-4">
-            <div *ngFor="let crime of selectedCriminal.crimes; let i = index" 
+            <div *ngFor="let crime of selectedCriminal.crimes; let i = index"
                  class="border border-gray-200 rounded-lg p-4">
               <div class="flex justify-between items-start mb-2">
                 <h5 class="font-medium text-gray-800">Crime {{ i + 1 }}: {{ crime.tipo }}</h5>
@@ -217,7 +317,7 @@
                 <div class="space-y-1">
                   <p><strong>Data:</strong> {{ formatDate(crime.dataOcorrencia) }}</p>
                   <p><strong>Local:</strong> {{ crime.local }}</p>
-                  <p><strong>Status:</strong> 
+                  <p><strong>Status:</strong>
                     <span [ngClass]="{
                       'text-blue-600': crime.statusProcesso === 'Aberto',
                       'text-yellow-600': crime.statusProcesso === 'Em Investigação',
@@ -253,7 +353,7 @@
 
       <!-- Modal Actions -->
       <div class="flex justify-end gap-4 mt-6 pt-4 border-t">
-        <button (click)="closeModal()" 
+        <button (click)="closeModal()"
                 class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
           Fechar
         </button>
