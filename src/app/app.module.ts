@@ -6,13 +6,18 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PageComponent } from './components/page/page.component';
 import { CriminalRecordComponent } from './components/criminal-record/criminal-record.component';
 import { WebcamSnapshotComponent } from './components/webcam-snapshot/webcam-snapshot.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { RegisterComplaintComponent } from './components/register-complaint/register-complaint.component';
+import { ComplaintListComponent } from './components/complaint-list/complaint-list.component';
+import { CriminalSearchComponent } from './components/criminal-search/criminal-search.component';
+import { AgentManagementComponent } from './components/agent-management/agent-management.component';
+import { SystemLogsComponent } from './components/system-logs/system-logs.component';
 
 @NgModule({
   declarations: [
@@ -25,12 +30,18 @@ import { SettingsComponent } from './components/settings/settings.component';
     CriminalRecordComponent,
     WebcamSnapshotComponent,
     ReportsComponent,
-    SettingsComponent
+    SettingsComponent,
+    RegisterComplaintComponent,
+    ComplaintListComponent,
+    CriminalSearchComponent,
+    AgentManagementComponent,
+    SystemLogsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

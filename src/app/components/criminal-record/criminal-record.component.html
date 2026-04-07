@@ -1,99 +1,243 @@
-<div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-full w-full relative">
-  <h1 class="text-xl sm:text-3xl font-bold mb-4 text-gray-800 text-center">Ficha Criminal</h1>
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h1 class="text-3xl font-bold text-pna-blue flex items-center">
+        <svg class="w-8 h-8 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+        </svg>
+        Registrar Ficha Criminal
+      </h1>
+      <p class="text-gray-600 mt-2">Cadastro completo de criminoso no sistema</p>
+    </div>
 
-  <!-- Histórico de Crimes -->
-  <div class="mb-6">
-    <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Histórico de Crimes</h2>
-    <ul id="historico-crimes" class="list-disc list-inside bg-gray-100 p-3 rounded-md shadow-sm">
-      <li class="text-gray-600" *ngIf="!historicoCrimes.length"> Nenhum crime adicionado ainda.</li>
-      <li *ngFor="let crime of historicoCrimes.controls; let idx = index" class="text-gray-600">
-        {{ crime.value.dataCrime }} - {{ crime.value.descricaoCrime }} 
-      </li>
-    </ul>
+    <!-- Alert -->
+    <div *ngIf="showAlert"
+         [ngClass]="{
+           'bg-green-50 border-green-200 text-green-800': alertType === 'success',
+           'bg-red-50 border-red-200 text-red-800': alertType === 'error'
+         }"
+         class="border rounded-lg p-4 mb-6">
+      <div class="flex">
+        <div class="ml-3">
+          <p class="text-sm font-medium">{{ alertMessage }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Histórico de Crimes -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+        📋 Histórico de Crimes
+      </h2>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div *ngIf="!historicoCrimes.length" class="text-center py-8 text-gray-500">
+          <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <p class="text-gray-500">Nenhum crime adicionado ainda</p>
+        </div>
+        <div *ngFor="let crime of historicoCrimes.controls; let idx = index"
+             class="bg-white border border-gray-200 rounded-lg p-4 mb-3 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <h4 class="font-semibold text-gray-800">Crime {{ idx + 1 }}</h4>
+              <p class="text-sm text-gray-600 mt-1">{{ crime.value.descricaoCrime }}</p>
+              <p class="text-xs text-gray-500 mt-2">📅 {{ crime.value.dataCrime }}</p>
+            </div>
+            <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
+              Registrado
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulário Principal -->
+    <form [formGroup]="criminalForm" (ngSubmit)="enviarFormulario()" class="space-y-6">
+
+      <!-- Informações Pessoais -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6 border-b border-gray-200 pb-2 flex items-center">
+          <svg class="w-6 h-6 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+          </svg>
+          Dados Pessoais do Suspeito
+        </h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Foto Section -->
+          <div class="lg:col-span-1">
+            <h3 class="text-lg font-medium text-gray-700 mb-4">📷 Fotografia</h3>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
+              <app-webcam-snapshot></app-webcam-snapshot>
+            </div>
+          </div>
+
+          <!-- Dados Pessoais -->
+          <div class="lg:col-span-2 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Apelido Criminal</label>
+                <input formControlName="apelido"
+                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
+                <input formControlName="nome"
+                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Bilhete de Identidade *</label>
+                <input formControlName="bi"
+                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Data de Nascimento *</label>
+                <input formControlName="dataNascimento" type="date"
+                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+                <span class="text-red-600 text-sm" *ngIf="!maiorDeIdade">⚠️ Reencaminhar para Julgado de Menores</span>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Gênero *</label>
+                <select formControlName="genero"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+                  <option value="">Selecione</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nível Acadêmico</label>
+                <select formControlName="nivelAcademico"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+                  <option value="">Selecione</option>
+                  <option value="Sem Escolaridade">Sem Escolaridade</option>
+                  <option value="Ensino Primário">Ensino Primário</option>
+                  <option value="Ensino Secundário">Ensino Secundário</option>
+                  <option value="Ensino Médio">Ensino Médio</option>
+                  <option value="Ensino Superior">Ensino Superior</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Informações Adicionais -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6 border-b border-gray-200 pb-2 flex items-center">
+          <svg class="w-6 h-6 mr-3 text-pna-blue" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+          </svg>
+          Informações Complementares
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Endereço</label>
+            <input formControlName="endereco"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+            <input formControlName="telefone"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Profissão</label>
+            <input formControlName="profissao"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Estado Civil</label>
+            <select formControlName="estadoCivil"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="">Selecione</option>
+              <option value="Solteiro">Solteiro(a)</option>
+              <option value="Casado">Casado(a)</option>
+              <option value="Divorciado">Divorciado(a)</option>
+              <option value="Viúvo">Viúvo(a)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descrição Física -->
+        <div class="mt-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Descrição Física *</label>
+          <textarea formControlName="descricaoFisica" rows="4"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent"
+                    placeholder="Descreva as características físicas: altura, peso, cor da pele, cabelo, olhos, sinais particulares, cicatrizes, tatuagens, etc."></textarea>
+        </div>
+      </div>
+
+      <!-- Detalhes do Crime -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6 border-b border-gray-200 pb-2 flex items-center">
+          <svg class="w-6 h-6 mr-3 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+          </svg>
+          Detalhes do Crime
+        </h2>
+
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Crime *</label>
+              <select formControlName="tipoCrime"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+                <option value="">Selecione o tipo</option>
+                <option value="Furto">Furto</option>
+                <option value="Roubo">Roubo</option>
+                <option value="Agressão">Agressão</option>
+                <option value="Homicídio">Homicídio</option>
+                <option value="Violação">Violação</option>
+                <option value="Sequestro">Sequestro</option>
+                <option value="Burla">Burla</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Data do Crime *</label>
+              <input formControlName="dataCrime" type="date"
+                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Local do Crime</label>
+            <input formControlName="localCrime"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Descrição do Crime *</label>
+            <textarea formControlName="descricaoCrime" rows="4"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent"
+                      placeholder="Descreva em detalhe o crime cometido..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex flex-col sm:flex-row gap-4 justify-between">
+          <button type="button" (click)="adicionarCrime()"
+                  class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
+            ➕ Adicionar Crime ao Histórico
+          </button>
+
+          <div class="flex gap-3">
+            <button type="button" (click)="resetForm()"
+                    class="bg-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-600 transition-colors">
+              🔄 Limpar Formulário
+            </button>
+            <button type="submit"
+                    [disabled]="!criminalForm.valid"
+                    class="bg-angola-red text-white px-6 py-3 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+              💾 Registrar Ficha Criminal
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
-
-
-  <!-- Formulário Principal -->
-  <form [formGroup]="criminalForm" (ngSubmit)="enviarFormulario()">
-    <!-- Informações Pessoais -->
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-      <div>
-        <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Foto</h2>
-        <app-webcam-snapshot></app-webcam-snapshot>
-      </div>
-      <div>
-        <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Informações Pessoais</h2>
-        <div>
-          <label for="apelido" class="block text-sm font-medium text-gray-700">Apelido Criminal</label>
-          <input formControlName="apelido" id="apelido"
-            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-        </div>
-        <div>
-          <label for="apelido" class="block text-sm font-medium text-gray-700">Nome Completo</label>
-          <input formControlName="nome" id="apelido"
-            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-        </div>
-        <div>
-          <label for="apelido" class="block text-sm font-medium text-gray-700">B.I</label>
-          <input formControlName="bi" id="apelido" type="text"
-            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-        </div>
-        <div>
-          <label for="apelido" class="block text-sm font-medium text-gray-700">Data de Nascimento</label>
-          <input formControlName="dataNascimento" id="apelido" type="date"
-            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-            <span class="text-red-600" *ngIf="!maiorDeIdade"> reencaminhar para Julgado de Menores</span>
-        </div>
-        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-          <div>
-            <label for="genero" class="block text-sm font-medium text-gray-700">Gênero</label>
-          <select id="genero" name="genero" formControlName="genero"
-            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-            <option value="">Selecione</option>
-            <option value="M">Masculino</option>
-            <option value="F">Feminino</option>
-          </select>
-          </div>
-          <div>
-            <label for="genero" class="block text-sm font-medium text-gray-700">Nivel Academico</label>
-          <select id="genero" name="genero" formControlName="genero"
-            class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-            <option value="">Selecione</option>
-            <option value="M">- 12 ano</option>
-            <option value="M">Frequência Ensino Médio</option>
-            <option value="M">Ensino Medio</option>
-            <option value="M">Bacharelato</option>
-            <option value="M">Frequência de Licenciatura</option>
-            <option value="F">Licenciatura</option>
-          </select>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-
-    <!-- Adicionar Crime -->
-    <div class="mt-6">
-      <h2 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Detalhes do Crime</h2>
-      <div class="space-y-4">
-        <div>
-          <label for="descricao-crime" class="block text-sm font-medium text-gray-700">Descrição do Crime</label>
-          <textarea id="descricao-crime" name="descricao-crime" rows="6" required formControlName="descricaoCrime"
-          class="flex w-full rounded-md focus:border-blue-500 border  bg-transparent  shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"></textarea>
-        </div>
-        <div>
-          <label for="data-crime" class="block text-sm font-medium text-gray-700">Data do Crime</label>
-          <input type="date" id="data-crime" name="data-crime" required formControlName="dataCrime"
-          class="flex h-9 w-full rounded-md focus:border-blue-500 border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-        </div>
-      </div>
-    </div>
-
-    <!-- Botões -->
-    <div class="mt-6 flex gap-4 justify-end">
-      <button (click)="adicionarCrime()" type="button" class="px-4 py-2 bg-blue-500 text-white">Adicionar Crime</button>
-      <button type="submit" class="px-4 py-2 bg-green-500 text-white">Guadar</button>
-      <button type="reset" class="px-4 py-2 bg-gray-500 text-white">Limpar</button>
-    </div>
-  </form>
 </div>

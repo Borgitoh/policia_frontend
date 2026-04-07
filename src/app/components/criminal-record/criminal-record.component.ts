@@ -9,6 +9,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CriminalRecordComponent {
    // Formulário reativo principal
    criminalForm!: FormGroup;
+   showAlert = false;
+   alertMessage = '';
+   alertType: 'success' | 'error' = 'success';
 
    // Webcam
    @ViewChild('webcam') webcam!: ElementRef<HTMLVideoElement>;
@@ -22,8 +25,16 @@ export class CriminalRecordComponent {
       bi: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
       dataNascimento: ['', Validators.required],
       genero: ['', Validators.required],
+      endereco: ['', Validators.required],
+      telefone: ['', Validators.required],
+      profissao: [''],
+      nivelAcademico: [''],
+      estadoCivil: [''],
+      descricaoFisica: ['', Validators.required],
       descricaoCrime: ['', Validators.required],
       dataCrime: ['', Validators.required],
+      tipoCrime: ['', Validators.required],
+      localCrime: ['', Validators.required],
       historicoCrimes: this.fb.array([]),
       foto: [''],
     });
@@ -51,12 +62,12 @@ export class CriminalRecordComponent {
 
     return anos >= 18;
   }
- 
+
    // Getter para acessar o array de crimes
    get historicoCrimes(): FormArray {
      return this.criminalForm.get('historicoCrimes') as FormArray;
    }
- 
+
    // Adicionar crime ao histórico
    adicionarCrime(): void {
     const { descricaoCrime, dataCrime } = this.criminalForm.value;
@@ -78,12 +89,12 @@ export class CriminalRecordComponent {
       dataCrime: '',
     });
   }
- 
+
    // Remover crime do histórico
    removerCrime(index: number): void {
      this.historicoCrimes.removeAt(index);
    }
- 
+
    // Inicializar webcam
    inicializarWebcam(): void {
      navigator.mediaDevices
@@ -95,13 +106,13 @@ export class CriminalRecordComponent {
          console.error('Erro ao acessar a webcam:', err);
        });
    }
- 
+
    // Capturar foto da webcam
    capturarFoto(): void {
      const canvas = this.canvas.nativeElement;
      const context = canvas.getContext('2d');
      const video = this.webcam.nativeElement;
- 
+
      if (context) {
        canvas.width = video.videoWidth;
        canvas.height = video.videoHeight;
@@ -110,13 +121,31 @@ export class CriminalRecordComponent {
        this.criminalForm.patchValue({ foto: this.fotoCapturada });
      }
    }
- 
+
    // Submeter formulário
    enviarFormulario(): void {
      if (this.criminalForm.valid) {
        console.log('Dados enviados:', this.criminalForm.value);
+       this.showAlertMessage('Ficha criminal registrada com sucesso!', 'success');
+       this.resetForm();
      } else {
        console.error('Formulário inválido!');
+       this.showAlertMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
      }
+   }
+
+   // Reset form
+   resetForm(): void {
+     this.criminalForm.reset();
+     this.historicoCrimes.clear();
+   }
+
+   private showAlertMessage(message: string, type: 'success' | 'error'): void {
+     this.alertMessage = message;
+     this.alertType = type;
+     this.showAlert = true;
+     setTimeout(() => {
+       this.showAlert = false;
+     }, 5000);
    }
 }

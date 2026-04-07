@@ -1,0 +1,222 @@
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-pna-blue flex items-center">
+            <svg class="w-8 h-8 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+            </svg>
+            Gest��o de Agentes PNA
+          </h1>
+          <p class="text-gray-600 mt-2">Gerenciar agentes da Polícia Nacional de Angola</p>
+        </div>
+        <button (click)="openForm()"
+                class="mt-4 sm:mt-0 bg-angola-red text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors">
+          ➕ Novo Agente
+        </button>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1">
+          <input type="text"
+                 [(ngModel)]="searchQuery"
+                 (input)="applyFilters()"
+                 placeholder="Pesquisar por nome, BI ou posto..."
+                 class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+        </div>
+        <div class="text-sm text-gray-500 flex items-center">
+          Total: {{ filteredAgents.length }} agentes
+        </div>
+      </div>
+    </div>
+
+    <!-- Agents Table -->
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div class="px-6 py-4 bg-pna-blue text-white">
+        <h2 class="text-xl font-bold">Lista de Agentes</h2>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agente</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posto/Categoria</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Esquadra</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contato</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Último Login</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let agent of filteredAgents" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div>
+                  <div class="text-sm font-medium text-gray-900">{{ agent.nome }}</div>
+                  <div class="text-sm text-gray-500">BI: {{ agent.bi }}</div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div>
+                  <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium block mb-1">
+                    {{ agent.posto }}
+                  </span>
+                  <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    {{ agent.categoria }}
+                  </span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ agent.esquadra }}</div>
+                <div class="text-xs text-gray-500">{{ agent.provincia }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">📞 {{ agent.telefone }}</div>
+                <div class="text-sm text-gray-500" *ngIf="agent.telefoneEmergencia">🚨 {{ agent.telefoneEmergencia }}</div>
+                <div class="text-sm text-gray-500">✉️ {{ agent.email }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span [ngClass]="getStatusClass(agent.status)"
+                      class="px-2 py-1 rounded-full text-xs font-medium">
+                  {{ agent.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ agent.ultimoLogin }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button (click)="editAgent(agent)"
+                          class="text-pna-blue hover:text-blue-900">
+                    ✏️
+                  </button>
+                  <button (click)="toggleStatus(agent)"
+                          class="text-yellow-600 hover:text-yellow-900">
+                    🔄
+                  </button>
+                  <button (click)="deleteAgent(agent)"
+                          class="text-red-600 hover:text-red-900">
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredAgents.length === 0" class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+        </svg>
+        <h3 class="mt-2 text-lg font-medium text-gray-900">Nenhum agente encontrado</h3>
+        <p class="mt-1 text-gray-500">Não existem agentes que correspondam aos filtros aplicados.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Form -->
+<div *ngIf="showForm" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-2xl shadow-lg rounded-md bg-white">
+    <div class="mt-3">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h3 class="text-2xl font-bold text-gray-900">
+          {{ isEditing ? 'Editar Agente' : 'Novo Agente' }}
+        </h3>
+        <button (click)="closeForm()" class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="agentForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
+            <input type="text" formControlName="nome"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Bilhete de Identidade *</label>
+            <input type="text" formControlName="bi"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Posto *</label>
+            <select formControlName="posto"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="">Selecione o posto</option>
+              <option *ngFor="let posto of postos" [value]="posto">{{ posto }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Categoria *</label>
+            <select formControlName="categoria"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="">Selecione a categoria</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Província *</label>
+            <select formControlName="provincia"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="">Selecione a província</option>
+              <option *ngFor="let provincia of provincias" [value]="provincia">{{ provincia }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Esquadra *</label>
+            <select formControlName="esquadra"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option value="">Selecione a esquadra</option>
+              <option *ngFor="let esquadra of esquadras" [value]="esquadra">{{ esquadra }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone Principal *</label>
+            <input type="text" formControlName="telefone"
+                   placeholder="Ex: 923456789"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone de Emergência</label>
+            <input type="text" formControlName="telefoneEmergencia"
+                   placeholder="Ex: 944123456"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+            <input type="email" formControlName="email"
+                   placeholder="Ex: agente@pna.gov.ao"
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex justify-end gap-4 mt-6 pt-4 border-t">
+          <button type="button" (click)="closeForm()"
+                  class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+            Cancelar
+          </button>
+          <button type="submit"
+                  [disabled]="!agentForm.valid"
+                  class="px-6 py-2 bg-angola-red text-white rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ isEditing ? 'Atualizar' : 'Cadastrar' }} Agente
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

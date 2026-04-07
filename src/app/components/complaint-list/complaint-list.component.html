@@ -1,0 +1,251 @@
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-pna-blue flex items-center">
+            <svg class="w-8 h-8 mr-3 text-angola-red" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+              <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
+            </svg>
+            Lista de Queixas
+          </h1>
+          <p class="text-gray-600 mt-2">Visualizar e gerenciar todas as queixas registradas</p>
+        </div>
+        <div class="mt-4 sm:mt-0">
+          <span class="text-sm text-gray-500">Total: {{ filteredComplaints.length }} queixas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+          <select [(ngModel)]="filters.status" (change)="applyFilters()"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+            <option value="">Todos os status</option>
+            <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Crime</label>
+          <select [(ngModel)]="filters.tipoCrime" (change)="applyFilters()"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+            <option value="">Todos os tipos</option>
+            <option *ngFor="let tipo of tiposCrime" [value]="tipo">{{ tipo }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Pesquisar</label>
+          <input type="text" [(ngModel)]="filters.search" (input)="applyFilters()"
+                 placeholder="Número, nome do denunciante ou suspeito..."
+                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+        </div>
+        <div class="flex items-end">
+          <button (click)="clearFilters()"
+                  class="w-full bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+            Limpar Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complaints Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div *ngFor="let complaint of filteredComplaints"
+           class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow {{ getPriorityClass(complaint) }}">
+
+        <!-- Header -->
+        <div class="p-4 border-b border-gray-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-semibold text-gray-800">{{ complaint.numeroProcesso }}</h3>
+              <p class="text-sm text-gray-600">{{ formatDate(complaint.dataRegistro) }}</p>
+            </div>
+            <div class="flex flex-col items-end">
+              <span [ngClass]="getStatusBadgeClass(complaint.status)"
+                    class="px-2 py-1 rounded-full text-xs font-medium">
+                {{ complaint.status }}
+              </span>
+              <span *ngIf="complaint.suspeito.criminalExistente"
+                    class="mt-1 px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">
+                🚨 Reincidente
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-4">
+          <div class="space-y-2">
+            <div>
+              <span class="text-sm font-medium text-gray-700">Tipo:</span>
+              <span class="text-sm text-gray-600 ml-1">{{ complaint.tipoCrime }}</span>
+            </div>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Denunciante:</span>
+              <span class="text-sm text-gray-600 ml-1">{{ complaint.denunciante.nome }}</span>
+            </div>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Suspeito:</span>
+              <span class="text-sm text-gray-600 ml-1">{{ complaint.suspeito.nome }}</span>
+            </div>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Local:</span>
+              <span class="text-sm text-gray-600 ml-1">{{ complaint.ocorrencia.local }}</span>
+            </div>
+            <div>
+              <span class="text-sm font-medium text-gray-700">Data Ocorrência:</span>
+              <span class="text-sm text-gray-600 ml-1">{{ formatDate(complaint.ocorrencia.data) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="p-4 border-t border-gray-200">
+          <div class="flex flex-col sm:flex-row gap-2">
+            <button (click)="viewComplaint(complaint)"
+                    class="flex-1 bg-pna-blue text-white px-3 py-2 rounded-md text-sm hover:bg-blue-700">
+              Ver Detalhes
+            </button>
+            <select (change)="updateComplaintStatus(complaint, $event)"
+                    [value]="complaint.status"
+                    class="flex-1 border border-gray-300 rounded-md px-2 py-2 text-sm focus:ring-2 focus:ring-pna-blue focus:border-transparent">
+              <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredComplaints.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      <h3 class="mt-2 text-lg font-medium text-gray-900">Nenhuma queixa encontrada</h3>
+      <p class="mt-1 text-gray-500">Não existem queixas que correspondam aos filtros aplicados.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Complaint Details -->
+<div *ngIf="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+    <div class="mt-3">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center mb-4 border-b pb-4">
+        <h3 class="text-2xl font-bold text-gray-900">Detalhes da Queixa</h3>
+        <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Content -->
+      <div *ngIf="selectedComplaint" class="space-y-6 max-h-96 overflow-y-auto">
+        <!-- Basic Info -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-semibold text-gray-700 mb-2">Informações Gerais</h4>
+            <div class="space-y-1">
+              <p><strong>Número:</strong> {{ selectedComplaint.numeroProcesso }}</p>
+              <p><strong>Data Registro:</strong> {{ formatDate(selectedComplaint.dataRegistro) }}</p>
+              <p><strong>Status:</strong>
+                <span [ngClass]="getStatusBadgeClass(selectedComplaint.status)"
+                      class="px-2 py-1 rounded-full text-xs font-medium ml-1">
+                  {{ selectedComplaint.status }}
+                </span>
+              </p>
+              <p><strong>Tipo de Crime:</strong> {{ selectedComplaint.tipoCrime }}</p>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-700 mb-2">Denunciante</h4>
+            <div class="space-y-1">
+              <p><strong>Nome:</strong> {{ selectedComplaint.denunciante.nome }}</p>
+              <p><strong>BI:</strong> {{ selectedComplaint.denunciante.bi }}</p>
+              <p><strong>Telefone:</strong> {{ selectedComplaint.denunciante.telefone }}</p>
+              <p><strong>Endereço:</strong> {{ selectedComplaint.denunciante.endereco }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suspect Info -->
+        <div>
+          <h4 class="font-semibold text-gray-700 mb-2">Suspeito</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <p><strong>Nome:</strong> {{ selectedComplaint.suspeito.nome }}</p>
+              <p *ngIf="selectedComplaint.suspeito.apelido"><strong>Alcunha:</strong> {{ selectedComplaint.suspeito.apelido }}</p>
+              <p *ngIf="selectedComplaint.suspeito.bi"><strong>BI:</strong> {{ selectedComplaint.suspeito.bi }}</p>
+              <p *ngIf="selectedComplaint.suspeito.idade"><strong>Idade:</strong> {{ selectedComplaint.suspeito.idade }} anos</p>
+            </div>
+            <div class="space-y-1">
+              <p *ngIf="selectedComplaint.suspeito.genero"><strong>Gênero:</strong> {{ selectedComplaint.suspeito.genero === 'M' ? 'Masculino' : 'Feminino' }}</p>
+              <p *ngIf="selectedComplaint.suspeito.endereco"><strong>Endereço:</strong> {{ selectedComplaint.suspeito.endereco }}</p>
+              <p *ngIf="selectedComplaint.suspeito.criminalExistente" class="text-red-600">
+                <strong>⚠️ Criminoso já registrado no sistema</strong>
+              </p>
+            </div>
+          </div>
+          <div class="mt-2">
+            <p><strong>Descrição Física:</strong> {{ selectedComplaint.suspeito.descricaoFisica }}</p>
+          </div>
+        </div>
+
+        <!-- Occurrence Info -->
+        <div>
+          <h4 class="font-semibold text-gray-700 mb-2">Ocorrência</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <p><strong>Data:</strong> {{ formatDate(selectedComplaint.ocorrencia.data) }}</p>
+              <p><strong>Hora:</strong> {{ selectedComplaint.ocorrencia.hora }}</p>
+              <p><strong>Local:</strong> {{ selectedComplaint.ocorrencia.local }}</p>
+              <p><strong>Província:</strong> {{ selectedComplaint.ocorrencia.provincia }}</p>
+            </div>
+            <div class="space-y-1">
+              <p><strong>Município:</strong> {{ selectedComplaint.ocorrencia.municipio }}</p>
+            </div>
+          </div>
+          <div class="mt-2">
+            <p><strong>Descrição:</strong></p>
+            <p class="text-gray-600 mt-1">{{ selectedComplaint.ocorrencia.descricao }}</p>
+          </div>
+        </div>
+
+        <!-- Witnesses -->
+        <div *ngIf="selectedComplaint.ocorrencia.testemunhas.length > 0">
+          <h4 class="font-semibold text-gray-700 mb-2">Testemunhas</h4>
+          <div class="space-y-2">
+            <div *ngFor="let testemunha of selectedComplaint.ocorrencia.testemunhas; let i = index"
+                 class="border border-gray-200 rounded p-3">
+              <p><strong>Testemunha {{ i + 1 }}:</strong> {{ testemunha.nome }}</p>
+              <p><strong>Telefone:</strong> {{ testemunha.telefone }}</p>
+              <p><strong>Relato:</strong> {{ testemunha.relato }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Observations -->
+        <div *ngIf="selectedComplaint.observacoes">
+          <h4 class="font-semibold text-gray-700 mb-2">Observações</h4>
+          <p class="text-gray-600">{{ selectedComplaint.observacoes }}</p>
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="flex justify-end gap-4 mt-6 pt-4 border-t">
+        <button (click)="closeModal()"
+                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
